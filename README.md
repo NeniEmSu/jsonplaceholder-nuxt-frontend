@@ -2,6 +2,26 @@
 
 > an interface that allows to view a list of users, search a user by username, add a new user, edit an existing user, delete a user.
 
+1. Deploy command
+   Build command:
+
+```bash
+   .env
+  BACKEND_USERS_ENDPOINT='link to api required'
+  BASE_URL='link to front-end required'
+```
+
+```bash
+   npm run generate
+  #  for netlify build
+   node ./create-env.js && npm run generate
+```
+
+also add the necessary environment variables
+2. If the ./create-env.js command is used make sure to add env variables to the site server.
+3. Deployed dirctory: dist
+4. Build for production shoukd be ready.
+
 ## Build Setup
 
 ```bash

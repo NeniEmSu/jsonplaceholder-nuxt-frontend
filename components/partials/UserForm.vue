@@ -28,8 +28,24 @@
                   v-model="userDetails.username"
                   type="text"
                   required
-                  placeholder="Enter your name"
+                  placeholder="Enter your username"
+                  :class="[
+                    !$v.username.$error && $v.username.minLength
+                      ? 'is-valid'
+                      : '',
+                    $v.username.$error && !$v.username.minLength
+                      ? 'is-invalid'
+                      : ''
+                  ]"
+                  :state="$v.username.$dirty ? !$v.username.$error : null"
                 ></b-form-input>
+                <small v-if="$v.username.required" class="text-danger"
+                  >Username is required.</small
+                >
+                <small v-if="!$v.username.minLength" class="text-danger"
+                  >username must have at least
+                  {{ $v.Username.$params.minLength.min }} letters.</small
+                >
               </b-form-group>
 
               <b-form-group label="Email:*" label-for="email" class="col-sm-6">
@@ -39,7 +55,19 @@
                   type="text"
                   required
                   placeholder="Enter your email"
+                  :class="[
+                    !$v.email.$error ? 'is-valid' : '',
+                    $v.email.$error ? 'is-invalid' : ''
+                  ]"
+                  :state="$v.email.$dirty ? !$v.email.$error : null"
                 ></b-form-input>
+                <small v-if="$v.email.required" class="text-danger"
+                  >Email is required.</small
+                >
+                <small v-if="!$v.email.minLength" class="text-danger"
+                  >Email must have at least
+                  {{ $v.email.$params.minLength.min }} letters.</small
+                >
               </b-form-group>
               <b-form-group label="Phone:" label-for="phone" class="col-sm-6">
                 <b-form-input
@@ -180,6 +208,7 @@
 </template>
 
 <script>
+import { required, minLength } from 'vuelidate/lib/validators'
 export default {
   props: {
     adding: {
@@ -195,7 +224,19 @@ export default {
   data() {
     return {
       isValid: false,
-      addLoading: false
+      addLoading: false,
+      errors: []
+    }
+  },
+
+  validations: {
+    username: {
+      required,
+      minLength: minLength(4)
+    },
+    email: {
+      required,
+      minLength: minLength(4)
     }
   },
 

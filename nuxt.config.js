@@ -22,7 +22,11 @@ export default {
 
   css: ['sweetalert2/dist/sweetalert2.min.css'],
 
-  plugins: ['~/plugins/vue-placeholders.js', '~/plugins/bootstrap-vue-icon'],
+  plugins: [
+    '~/plugins/vue-placeholders.js',
+    '~/plugins/vuelidate.js',
+    '~/plugins/bootstrap-vue-icon'
+  ],
 
   buildModules: [
     '@nuxtjs/eslint-module',
