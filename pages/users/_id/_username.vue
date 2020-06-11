@@ -75,7 +75,11 @@
               <p>{{ error }}</p>
             </b-alert>
 
-            <UserForm v-if="editState" @Call-Get-Fuction="callGetUser" />
+            <UserForm
+              v-if="editState"
+              :user-details="userDetails"
+              @Call-Get-Fuction="callGetUser"
+            />
           </div>
         </div>
       </div>
@@ -265,7 +269,7 @@ export default {
   },
   data() {
     return {
-      user: {},
+      userDetails: {},
       form: {
         name: ''
       },
@@ -296,34 +300,9 @@ export default {
           `${process.env.BACKEND_USERS_ENDPOINT}/${this.$route.params.id}`
         )
         this.user = await data
-        this.form = await data
+        this.userDetails = await data
       } catch (error) {
         this.$swal('Error', error.response.data.error, 'error')
-      }
-      this.userLoading = false
-    },
-    async editUser() {
-      this.userLoading = true
-      try {
-        await this.$axios
-          .put(
-            `${process.env.BACKEND_USERS_ENDPOINT}/${this.$route.params.id}`,
-            {
-              name: this.form.name
-            }
-          )
-          .then((response, append = false) => {
-            this.$store.dispatch('toast/setToast', {
-              name: 'Success',
-              variant: response.data.type,
-              text: response.data.message,
-              delay: 5000
-            })
-            this.getUser()
-            this.editState = false
-          })
-      } catch (error) {
-        this.error = error.response.data.error
       }
       this.userLoading = false
     },

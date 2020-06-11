@@ -8,15 +8,15 @@
               <h3 v-if="adding">Add User</h3>
               <h3 v-else>Edit User</h3>
             </div>
-            <form class="row" @submit.prevent="addNewUser">
-              <!-- <b-form-group label="Name:" label-for="name" class="col-sm-6">
+            <form class="row" @submit.prevent="mutateUser">
+              <b-form-group label="Name:" label-for="name" class="col-sm-6">
                 <b-form-input
                   id="name"
                   v-model="userDetails.name"
                   type="text"
                   placeholder="Enter name"
                 ></b-form-input>
-              </b-form-group> -->
+              </b-form-group>
 
               <b-form-group
                 label="UserName:*"
@@ -41,7 +41,7 @@
                   placeholder="Enter your email"
                 ></b-form-input>
               </b-form-group>
-              <!--<b-form-group label="Phone:" label-for="phone" class="col-sm-6">
+              <b-form-group label="Phone:" label-for="phone" class="col-sm-6">
                 <b-form-input
                   id="phone"
                   v-model="userDetails.phone"
@@ -61,9 +61,9 @@
                   type="text"
                   placeholder="Enter your Website address"
                 ></b-form-input>
-              </b-form-group> -->
+              </b-form-group>
 
-              <!-- <div class="address col-12">
+              <div class="address col-12">
                 <p>Adress:</p>
                 <div class="row">
                   <b-form-group
@@ -154,7 +154,7 @@
                     ></b-form-input>
                   </b-form-group>
                 </div>
-              </div> -->
+              </div>
 
               <b-form-group class="col-sm-6">
                 <span
@@ -181,28 +181,15 @@ export default {
     adding: {
       default: false,
       type: Boolean
+    },
+    userDetails: {
+      // eslint-disable-next-line vue/require-valid-default-prop
+      default: {},
+      type: Object
     }
   },
   data() {
     return {
-      userDetails: {
-        // name: '',
-        email: null,
-        username: null
-        // website: null,
-        // phone: null,
-        // address: {
-        //   street: null,
-        //   suit: null,
-        //   zipcode: null,
-        //   city: null
-        // },
-        // company: {
-        //   compName: null,
-        //   bs: null,
-        //   catchPhrase: null
-        // }
-      },
       isValid: false,
       addLoading: false
     }
@@ -218,47 +205,79 @@ export default {
   },
 
   methods: {
-    addNewUser() {
-      // const formData = new FormData()
-      // formData.append('name', this.userDetails.name)
-      // formData.append('username', this.userDetails.userName)
-      // formData.append('phone', this.userDetails.phone)
-      // formData.append('email', this.userDetails.email)
-      // formData.append('website', this.userDetails.website)
-      // formData.append('street', this.userDetails.subCategory)
-      // formData.append('suit', this.userDetails.subCategory)
-
-      this.addLoading = true
-      this.$axios
-        .$post(`${process.env.BACKEND_USERS_ENDPOINT}`, this.userDetails)
-        .then((response) => {
-          this.addLoading = false
-          this.userDetails = {
-            // name: '',
-            username: '',
-            // website: null,
-            // phone: null,
-            email: null
-            // address: {
-            //   street: null,
-            //   suit: null,
-            //   zipcode: null,
-            //   city: null
-            // },
-            // company: {
-            //   compName: null,
-            //   bs: null,
-            //   catchPhrase: null
-            // }
-          }
-          this.$emit('Call-Get-Fuction')
-          this.addLoading = false
-          this.$swal('Success', 'New User Added Successfully', 'success')
-        })
-        .catch((err) => {
-          this.addLoading = false
-          this.$swal('Error', `Something Went wrong, \n Error: ${err}`, 'error')
-        })
+    mutateUser() {
+      if (this.adding) return this.addNewUser()
+      return this.editUser()
+    },
+    async addNewUser() {
+      const config = {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      }
+      try {
+        this.addLoading = true
+        await this.$axios
+          .$post(
+            `${process.env.BACKEND_USERS_ENDPOINT}`,
+            this.userDetails,
+            config
+          )
+          .then((response) => {
+            this.userDetails = {
+              name: '',
+              username: '',
+              website: null,
+              phone: null,
+              email: null,
+              address: {
+                street: null,
+                suit: null,
+                zipcode: null,
+                city: null
+              },
+              company: {
+                compName: null,
+                bs: null,
+                catchPhrase: null
+              }
+            }
+            this.$emit('Call-Get-Fuction')
+            this.$swal('Success', 'New User Added Successfully', 'success')
+          })
+      } catch (error) {
+        this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
+      }
+      this.userLoading = false
+    },
+    async editUser() {
+      const config = {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      }
+      this.userLoading = true
+      try {
+        await this.$axios
+          .put(
+            `${process.env.BACKEND_USERS_ENDPOINT}/${this.userDetails.id}`,
+            this.userDetails,
+            config
+          )
+          .then((response, append = false) => {
+            this.$store.dispatch('toast/setToast', {
+              name: 'Success',
+              variant: response.data.type,
+              text: response.data.message,
+              delay: 5000
+            })
+            this.getUser()
+            this.editState = false
+          })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
+      this.userLoading = false
     }
   }
 }

@@ -5,6 +5,21 @@
         Users
       </h1>
 
+      <b-form-group class="col-sm ml-auto my-auto">
+        <b-input-group>
+          <b-input-group-prepend is-text>
+            <b-icon icon="search" font-scale="1.5"> </b-icon>
+          </b-input-group-prepend>
+          <b-input
+            v-model="search"
+            type="text"
+            placeholder="Search by song title, artist, album or genre"
+            required
+            name="Search"
+          />
+        </b-input-group>
+      </b-form-group>
+
       <template v-if="usersLoading">
         <content-placeholders>
           <content-placeholders-text class="mt-5" :lines="10" />
@@ -16,6 +31,7 @@
           <UserForm
             v-if="addState"
             :adding="adding"
+            :user-details="userDetails"
             @Call-Get-Fuction="callGetUsers"
           />
           <div class="my-2">
@@ -89,6 +105,7 @@
 </template>
 
 <script>
+// import _ from 'lodash'
 import UserForm from '~/components/partials/UserForm'
 /* eslint-disable no-console */
 export default {
@@ -98,15 +115,28 @@ export default {
   },
   data() {
     return {
-      adding: true,
       userDetails: {
-        email: '',
-        userName: '',
-        password: '',
-        repeat_password: '',
-        status: false
+        name: null,
+        email: null,
+        username: null,
+        website: null,
+        phone: null,
+        address: {
+          street: null,
+          suit: null,
+          zipcode: null,
+          city: null
+        },
+        company: {
+          compName: null,
+          bs: null,
+          catchPhrase: null
+        }
       },
+      search: '',
+      adding: true,
       allUsers: [],
+      filteredData: [],
       usersLoading: false,
       isValid: false,
       addLoading: false,
@@ -169,10 +199,46 @@ export default {
     }
   },
 
+  // watch: {
+  //   search: _.debounce(async function(value) {
+  //     // eslint-disable-next-line no-console
+  //     console.log(value)
+  //     const route = {
+  //       name: 'songs'
+  //     }
+  //     if (this.search !== '') {
+  //       route.query = {
+  //         search: this.search
+  //       }
+  //     }
+  //     await this.$router.push(route)
+  //   }, 1500),
+  //   '$route.query.search': {
+  //     immediate: true,
+  //     handler(value) {
+  //       this.search = value
+  //       this.getAllUsers(value)
+  //     }
+  //   }
+  // },
+
   created() {
     this.getAllUsers()
   },
+
   methods: {
+    getfilteredData() {
+      this.filteredData = this.allUsers
+      let filteredDataBySearch = []
+
+      // filter according to name
+      if (this.search !== '') {
+        filteredDataBySearch = this.filteredData.filter((obj) =>
+          obj.username.toUpperCase().match(this.search.toUpperCase())
+        )
+        this.filteredData = filteredDataBySearch
+      }
+    },
     async getAllUsers() {
       const config = {
         headers: {
