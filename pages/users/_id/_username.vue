@@ -74,27 +74,8 @@
               </h4>
               <p>{{ error }}</p>
             </b-alert>
-            <div v-if="editState" class="card">
-              <div class="card-body">
-                <div class="card-name mb-4 d-flex">
-                  <h4>Edit User</h4>
-                  <b-button
-                    v-if="editState"
-                    class="ml-auto"
-                    variant="light"
-                    @click="editState = !editState"
-                  >
-                    <b-icon
-                      icon="x-circle-fill"
-                      color="danger"
-                      variant="danger"
-                      font-scale="1.5"
-                    ></b-icon>
-                  </b-button>
-                </div>
-                Form goes here.
-              </div>
-            </div>
+
+            <UserForm v-if="editState" @Call-Get-Fuction="callGetUser" />
           </div>
         </div>
       </div>
@@ -257,11 +238,12 @@
               <div class="widget-body">
                 <div class="widget-main">
                   <p>
-                    {{ user.company.catchphrase }}
+                    <strong>Business Statement: </strong>{{ user.company.bs }}
                   </p>
                   <p>
-                    {{ user.company.bs }}
+                    {{ user.company.catchPhrase }}
                   </p>
+
                   <p>
                     Thanks for visiting my profile.
                   </p>
@@ -276,7 +258,11 @@
 </template>
 
 <script>
+import UserForm from '~/components/partials/UserForm'
 export default {
+  components: {
+    UserForm
+  },
   data() {
     return {
       user: {},
@@ -298,6 +284,10 @@ export default {
     onHidden() {
       // Return focus to the button once hidden
       this.$refs.button.focus()
+    },
+    callGetUser() {
+      this.getUser()
+      this.editState = false
     },
     async getUser() {
       this.userLoading = true

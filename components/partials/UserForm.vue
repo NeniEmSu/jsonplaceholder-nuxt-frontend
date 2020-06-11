@@ -5,7 +5,8 @@
         <div class="card">
           <div class="card-body">
             <div class="card-title mb-4">
-              <h3>Add User</h3>
+              <h3 v-if="adding">Add User</h3>
+              <h3 v-else>Edit User</h3>
             </div>
             <form class="row" @submit.prevent="addNewUser">
               <!-- <b-form-group label="Name:" label-for="name" class="col-sm-6">
@@ -129,12 +130,12 @@
 
                   <b-form-group
                     label="Catch phrase:"
-                    label-for="catchphrase"
+                    label-for="catchPhrase"
                     class="col-sm-6"
                   >
                     <b-form-input
-                      id="catchphrase"
-                      v-model="userDetails.company.catchphrase"
+                      id="catchPhrase"
+                      v-model="userDetails.company.catchPhrase"
                       type="text"
                       placeholder="Your companies catch phrase"
                     ></b-form-input>
@@ -176,6 +177,12 @@
 
 <script>
 export default {
+  props: {
+    adding: {
+      default: false,
+      type: Boolean
+    }
+  },
   data() {
     return {
       userDetails: {
@@ -193,7 +200,7 @@ export default {
         // company: {
         //   compName: null,
         //   bs: null,
-        //   catchphrase: null
+        //   catchPhrase: null
         // }
       },
       isValid: false,
@@ -241,7 +248,7 @@ export default {
             // company: {
             //   compName: null,
             //   bs: null,
-            //   catchphrase: null
+            //   catchPhrase: null
             // }
           }
           this.$emit('Call-Get-Fuction')

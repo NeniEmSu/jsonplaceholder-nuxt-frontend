@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import axios from 'axios'
 require('dotenv').config()
 
 export default {
@@ -53,13 +53,13 @@ export default {
 
   generate: {
     routes() {
-      const userRoute = axios
-        .get(`${process.env.BACKEND_USERS_ENDPOINT}`)
-        .then((res) => {
+      const userRoute = fetch(`${process.env.BACKEND_USERS_ENDPOINT}`).then(
+        (res) => {
           return res.data.userss.map((user) => {
             return `/user/${user.id}/${user.username}`
           })
-        })
+        }
+      )
       return Promise.all([userRoute]).then((values) => {
         return values.join().split(',')
       })

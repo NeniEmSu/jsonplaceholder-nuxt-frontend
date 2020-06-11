@@ -13,7 +13,11 @@
 
       <template v-else>
         <section class="mt-2 container">
-          <AddUserForm v-if="addState" @Call-Get-Fuction="callGetUsers" />
+          <UserForm
+            v-if="addState"
+            :adding="adding"
+            @Call-Get-Fuction="callGetUsers"
+          />
           <div class="my-2">
             <button class="btn btn-info my-3" @click="initForm">
               {{ addState ? 'Cancel' : 'Add New User' }}
@@ -85,15 +89,16 @@
 </template>
 
 <script>
-import AddUserForm from '~/components/partials/AddUserForm'
+import UserForm from '~/components/partials/UserForm'
 /* eslint-disable no-console */
 export default {
   name: 'Users',
   components: {
-    AddUserForm
+    UserForm
   },
   data() {
     return {
+      adding: true,
       userDetails: {
         email: '',
         userName: '',
