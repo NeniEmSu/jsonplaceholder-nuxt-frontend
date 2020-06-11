@@ -1,3 +1,6 @@
+import axios from 'axios'
+require('dotenv').config()
+
 export default {
   mode: 'universal',
 
@@ -36,6 +39,32 @@ export default {
     '@nuxtjs/sitemap'
   ],
   axios: {},
+  robots: () => {
+    return {
+      Sitemap: '/sitemap.xml'
+    }
+  },
+
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: process.env.BASE_URL,
+    cacheTime: 1000 * 60 * 15
+  },
+
+  generate: {
+    routes() {
+      const userRoute = axios
+        .get(`${process.env.BACKEND_USERS_ENDPOINT}`)
+        .then((res) => {
+          return res.data.userss.map((user) => {
+            return `/user/${user.id}/${user.username}`
+          })
+        })
+      return Promise.all([userRoute]).then((values) => {
+        return values.join().split(',')
+      })
+    }
+  },
   build: {
     extend(config, ctx) {}
   }
