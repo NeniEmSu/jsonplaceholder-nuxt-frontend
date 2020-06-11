@@ -16,7 +16,7 @@
         <content-placeholders-heading class="my-5" :lines="1" />
         <div class="mt-2">
           <div class="row">
-            <div class="col-sm-12 col-md-3 center">
+            <div class="col-xs-12 col-sm-3 center">
               <content-placeholders-img class="mb-2" />
 
               <div class="space space-4"></div>
@@ -26,7 +26,7 @@
               <content-placeholders-text :lines="1" />
             </div>
 
-            <div class="col-sm-12 col-md-9">
+            <div class="col-xs-12 col-sm-9">
               <content-placeholders-text :lines="1" />
 
               <content-placeholders-text :lines="1" />
@@ -40,7 +40,7 @@
           <div class="space-20"></div>
 
           <div class="row">
-            <div class="col-sm-12 col-md-6">
+            <div class="col-xs-12 col-sm-6">
               <div class="widget-box transparent">
                 <content-placeholders-text
                   :lines="3"
@@ -67,7 +67,7 @@
     <template v-else>
       <div class="container my-2">
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-sm-12">
             <b-alert v-if="error" show variant="danger">
               <h4 class="alert-heading">
                 Error
@@ -100,14 +100,16 @@
       </div>
       <div class="mt-2">
         <div class="row">
-          <div class="col-sm-12 col-md-3 center">
+          <div class="col-xs-12 col-sm-3 center">
             <span class="profile-picture">
-              <img
+              <b-img
                 id="avatar2"
-                class="editable img-responsive"
-                alt=" Avatar"
                 src="http://bootdey.com/img/Content/avatar/avatar6.png"
-              />
+                fluid
+                editable
+                img-responsive
+                :alt="`${user.username}'s Avatar`"
+              ></b-img>
             </span>
 
             <div class="space space-4"></div>
@@ -132,7 +134,7 @@
           </div>
           <!-- /.col -->
 
-          <div class="col-sm-12 col-md-9">
+          <div class="col-xs-12 col-sm-9">
             <h4 class="blue">
               <span class="middle">{{ user.name }}</span>
 
@@ -157,7 +159,7 @@
                 <div class="profile-info-value">
                   <i class="fa fa-map-marker light-orange bigger-110"></i>
                   <span>{{ user.address.street }}</span>
-                  <span>{{ user.address.suite }}</span>
+                  <span>{{ user.address.suitee }}</span>
                   <span>{{ user.address.city }}</span>
                 </div>
               </div>
@@ -230,12 +232,12 @@
         <div class="space-20"></div>
 
         <div class="row">
-          <div class="col-sm-12 col-md-6">
+          <div class="col-xs-12 col-sm-6">
             <div class="widget-box transparent">
               <div class="widget-header widget-header-small">
                 <h4 class="widget-title smaller">
                   <i class="ace-icon fa fa-check-square-o bigger-110"></i>
-                  Company catch phrase.
+                  About {{ user.company.name }}
                 </h4>
               </div>
 

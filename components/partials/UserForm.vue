@@ -79,10 +79,14 @@
                     ></b-form-input>
                   </b-form-group>
 
-                  <b-form-group label="Suit:" label-for="suit" class="col-sm-6">
+                  <b-form-group
+                    label="suite:"
+                    label-for="suite"
+                    class="col-sm-6"
+                  >
                     <b-form-input
-                      id="suit"
-                      v-model="userDetails.address.suit"
+                      id="suite"
+                      v-model="userDetails.address.suite"
                       type="text"
                       placeholder="Apt. 0000"
                     ></b-form-input>
@@ -232,7 +236,7 @@ export default {
               email: null,
               address: {
                 street: null,
-                suit: null,
+                suite: null,
                 zipcode: null,
                 city: null
               },
@@ -248,7 +252,7 @@ export default {
       } catch (error) {
         this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
       }
-      this.userLoading = false
+      this.addLoading = false
     },
     async editUser() {
       const config = {
@@ -256,7 +260,7 @@ export default {
           'Content-type': 'application/json; charset=UTF-8'
         }
       }
-      this.userLoading = true
+      this.addLoading = true
       try {
         await this.$axios
           .put(
@@ -267,17 +271,22 @@ export default {
           .then((response, append = false) => {
             this.$store.dispatch('toast/setToast', {
               name: 'Success',
-              variant: response.data.type,
-              text: response.data.message,
+              variant: 'success',
+              text: `${response.username} updated sucessfully.`,
               delay: 5000
             })
             this.getUser()
             this.editState = false
           })
       } catch (error) {
-        this.error = error.response.data.error
+        this.error = error
+        this.$swal({
+          name: 'Somethimg went wrong!',
+          text: 'Try again later.',
+          icon: 'error'
+        })
       }
-      this.userLoading = false
+      this.addLoading = false
     }
   }
 }

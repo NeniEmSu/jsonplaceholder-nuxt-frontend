@@ -125,7 +125,7 @@ export default {
         phone: null,
         address: {
           street: null,
-          suit: null,
+          suite: null,
           zipcode: null,
           city: null
         },
