@@ -85,7 +85,14 @@
                 </b-button>
               </template>
               <template v-slot:cell(delete)="data">
+                <span
+                  v-if="deleteLoading"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
                 <b-button
+                  v-else
                   class="ml-auto"
                   variant="light"
                   @click="deleteUser(data.item.id)"
@@ -145,6 +152,7 @@ export default {
       addState: false,
       sortBy: 'Total',
       sortDesc: true,
+      deleteLoding: false,
       fields: [
         { key: 'No', stickyColumn: true, isRowHeader: true, sortable: true },
         {
@@ -266,6 +274,7 @@ export default {
         )
         this.$store.dispatch('toast/setToast', {
           name: 'Success',
+          title: 'Success!',
           variant: 'success',
           text: `Users Fetch complete.`,
           delay: 5000
@@ -294,6 +303,7 @@ export default {
           'Content-type': 'application/json; charset=UTF-8'
         }
       }
+      this.deleteLoding = true
       this.$swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -307,16 +317,18 @@ export default {
           this.$axios
             .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`, config)
             .then((response) => {
+              this.deleteLoding = true
               this.getAllUsers()
               this.$swal({
                 text: "Poof! You've sucessfully deleted that user!",
                 icon: 'success'
               })
             })
-            .catch((err) => {
+            .catch((error) => {
+              this.deleteLoding = false
               this.$swal(
                 'Error',
-                `Somethimg went wrong, Error: ${err}`,
+                `Somethimg went wrong, Error: ${error}`,
                 'error'
               )
             })

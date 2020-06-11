@@ -88,8 +88,16 @@
         <b-button class="ml-4" variant="light" @click="editState = !editState">
           <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
         </b-button>
+
         <b-button class="ml-auto" variant="light" @click="deleteUser(user.id)">
+          <span
+            v-if="deleteLoading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
           <b-icon
+            v-else
             icon="trash-fill"
             color="danger"
             variant="danger"
@@ -104,7 +112,7 @@
             <span class="profile-picture">
               <b-img
                 id="avatar2"
-                src="http://bootdey.com/img/Content/avatar/avatar6.png"
+                src="https://image.shutterstock.com/image-vector/default-placeholder-fitness-trainer-tshirt-260nw-1064798171.jpg"
                 fluid
                 editable
                 img-responsive
@@ -161,14 +169,6 @@
                   <span>{{ user.address.street }}</span>
                   <span>{{ user.address.suitee }}</span>
                   <span>{{ user.address.city }}</span>
-                </div>
-              </div>
-
-              <div class="profile-info-row">
-                <div class="profile-info-name">Age</div>
-
-                <div class="profile-info-value">
-                  <span>38</span>
                 </div>
               </div>
 
@@ -271,6 +271,7 @@ export default {
   },
   data() {
     return {
+      deleteLoading: false,
       userDetails: {},
       form: {
         name: ''
@@ -309,6 +310,7 @@ export default {
       this.userLoading = false
     },
     deleteUser(id) {
+      this.deleteLoading = true
       this.$swal({
         name: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -322,6 +324,7 @@ export default {
           this.$axios
             .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`)
             .then((response) => {
+              this.deleteLoading = false
               this.$router.push('/users')
               this.$swal({
                 text: "Poof! You've sucessfully deleted that user!",
@@ -329,9 +332,10 @@ export default {
               })
             })
             .catch((error) => {
+              this.deleteLoading = false
               this.$swal({
                 name: 'Somethimg went wrong!',
-                text: error.response.data.error,
+                text: error,
                 icon: 'error'
               })
             })
