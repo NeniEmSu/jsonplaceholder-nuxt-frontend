@@ -56,7 +56,7 @@ export default {
       const userRoute = axios
         .get(`${process.env.BACKEND_USERS_ENDPOINT}`)
         .then((res) => {
-          return res.data.map((user) => {
+          return res.map((user) => {
             return `/user/${user.id}/${user.username}`
           })
         })

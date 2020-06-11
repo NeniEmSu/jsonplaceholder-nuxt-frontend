@@ -5,21 +5,6 @@
         Users
       </h1>
 
-      <b-form-group class="col-sm ml-auto my-auto">
-        <b-input-group>
-          <b-input-group-prepend is-text>
-            <b-icon icon="search" font-scale="1.5"> </b-icon>
-          </b-input-group-prepend>
-          <b-input
-            v-model="search"
-            type="text"
-            placeholder="Search by song title, artist, album or genre"
-            required
-            name="Search"
-          />
-        </b-input-group>
-      </b-form-group>
-
       <template v-if="usersLoading">
         <content-placeholders>
           <content-placeholders-text class="mt-5" :lines="10" />
@@ -35,9 +20,26 @@
             @Call-Get-Fuction="callGetUsers"
           />
           <div class="my-2">
-            <button class="btn btn-info my-3" @click="initForm">
-              {{ addState ? 'Cancel' : 'Add New User' }}
-            </button>
+            <div class="d-flex">
+              <button class="btn btn-info my-3" @click="initForm">
+                {{ addState ? 'Cancel' : 'Add New User' }}
+              </button>
+              <b-form-group class="col-sm ml-auto my-auto">
+                <b-input-group>
+                  <b-input-group-prepend is-text>
+                    <b-icon icon="search" font-scale="1.5"> </b-icon>
+                  </b-input-group-prepend>
+                  <b-input
+                    v-model="search"
+                    type="text"
+                    placeholder="Search by song title, artist, album or genre"
+                    required
+                    name="Search"
+                  />
+                </b-input-group>
+              </b-form-group>
+            </div>
+
             <b-table
               striped
               hover
@@ -105,7 +107,7 @@
 </template>
 
 <script>
-// import _ from 'lodash'
+import _ from 'lodash'
 import UserForm from '~/components/partials/UserForm'
 /* eslint-disable no-console */
 export default {
@@ -172,7 +174,7 @@ export default {
 
   computed: {
     items() {
-      return this.allUsers.map((user, index) => {
+      return this.filteredData.map((user, index) => {
         return {
           No: index + 1,
           id: user.id,
@@ -199,31 +201,38 @@ export default {
     }
   },
 
-  // watch: {
-  //   search: _.debounce(async function(value) {
-  //     // eslint-disable-next-line no-console
-  //     console.log(value)
-  //     const route = {
-  //       name: 'songs'
-  //     }
-  //     if (this.search !== '') {
-  //       route.query = {
-  //         search: this.search
-  //       }
-  //     }
-  //     await this.$router.push(route)
-  //   }, 1500),
-  //   '$route.query.search': {
-  //     immediate: true,
-  //     handler(value) {
-  //       this.search = value
-  //       this.getAllUsers(value)
-  //     }
-  //   }
-  // },
+  watch: {
+    allUsers() {
+      this.getfilteredData()
+    },
+    search: _.debounce(async function(value) {
+      // eslint-disable-next-line no-console
+      console.log(value)
+      const route = {
+        name: 'users'
+      }
+      if (this.search !== '') {
+        route.query = {
+          search: this.search
+        }
+      }
+      await this.$router.push(route)
+    }, 1500),
+    '$route.query.search': {
+      immediate: true,
+      handler(value) {
+        this.search = value
+        this.getAllUsers(value)
+      }
+    }
+  },
 
   created() {
     this.getAllUsers()
+  },
+
+  mounted() {
+    this.getfilteredData()
   },
 
   methods: {
@@ -231,8 +240,7 @@ export default {
       this.filteredData = this.allUsers
       let filteredDataBySearch = []
 
-      // filter according to name
-      if (this.search !== '') {
+      if (this.search) {
         filteredDataBySearch = this.filteredData.filter((obj) =>
           obj.username.toUpperCase().match(this.search.toUpperCase())
         )
@@ -305,6 +313,20 @@ export default {
           this.$swal('The user detail is safe!')
         }
       })
+    }
+  },
+  head() {
+    return {
+      title: 'Users.',
+      titleTemplate: 'ETT - %s!',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'View a list of users, search a user by username, add a new user, navigate to edit an existing user, delete a user.'
+        }
+      ]
     }
   }
 }
