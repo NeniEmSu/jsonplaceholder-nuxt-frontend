@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div>
+    <div class="mt-5">
       <h1 class="title">
-        edicasoft-vue-test-task
+        Edicasoft Vue users Test Task
       </h1>
       <p class="subtitle">
-        an interface that allows to view a list of users, search a user by
+        An interface that allows to view a list of users, search a user by
         username, add a new user, edit an existing user, delete a user.
       </p>
     </div>
