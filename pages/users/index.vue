@@ -222,7 +222,7 @@ export default {
       immediate: true,
       handler(value) {
         this.search = value
-        this.getAllUsers(value)
+        this.getfilteredData(value)
       }
     }
   },
@@ -232,17 +232,17 @@ export default {
   },
 
   mounted() {
-    this.getfilteredData()
+    this.getfilteredData(this.search)
   },
 
   methods: {
-    getfilteredData() {
+    getfilteredData(search) {
       this.filteredData = this.allUsers
       let filteredDataBySearch = []
 
-      if (this.search) {
+      if (search) {
         filteredDataBySearch = this.filteredData.filter((obj) =>
-          obj.username.toUpperCase().match(this.search.toUpperCase())
+          obj.username.toUpperCase().match(search.toUpperCase())
         )
         this.filteredData = filteredDataBySearch
       }
