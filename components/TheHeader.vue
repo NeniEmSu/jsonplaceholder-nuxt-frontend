@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable type="dark" variant="dark">
     <b-container>
-      <b-navbar-brand href="#"
+      <b-navbar-brand to="/"
         ><b-img src="https://edicasoft.com/static/public/favicon.ico"></b-img>
         Test Task</b-navbar-brand
       >
