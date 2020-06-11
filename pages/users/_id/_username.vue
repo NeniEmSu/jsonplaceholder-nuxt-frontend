@@ -340,6 +340,20 @@ export default {
         }
       })
     }
+  },
+  head() {
+    return {
+      title: this.$route.params.username,
+      titleTemplate: 'ETT - %s!',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'An interface that allows to: View a list of users, search a user by username, add a new user, navigate to edit an existing user, delete a user.'
+        }
+      ]
+    }
   }
 }
 </script>

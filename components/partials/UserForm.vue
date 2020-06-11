@@ -301,31 +301,30 @@ export default {
           'Content-type': 'application/json; charset=UTF-8'
         }
       }
-      this.addLoading = true
       try {
+        this.addLoading = true
         await this.$axios
-          .put(
+          .$post(
             `${process.env.BACKEND_USERS_ENDPOINT}/${this.userDetails.id}`,
             this.userDetails,
             config
           )
-          .then((response, append = false) => {
+          .then((response) => {
             this.$store.dispatch('toast/setToast', {
               name: 'Success',
               variant: 'success',
               text: `${response.username} updated sucessfully.`,
               delay: 5000
             })
-            this.getUser()
-            this.editState = false
+            this.$emit('Call-Get-Fuction')
+            this.$swal(
+              'Success',
+              `${response.username} updated Successfully`,
+              'success'
+            )
           })
       } catch (error) {
-        this.error = error
-        this.$swal({
-          name: 'Somethimg went wrong!',
-          text: 'Try again later.',
-          icon: 'error'
-        })
+        this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
       }
       this.addLoading = false
     }

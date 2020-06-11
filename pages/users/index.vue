@@ -148,14 +148,19 @@ export default {
       fields: [
         { key: 'No', stickyColumn: true, isRowHeader: true, sortable: true },
         {
-          key: 'name',
+          key: 'username',
           stickyColumn: true,
+          sortable: false
+        },
+        {
+          key: 'name',
           sortable: false
         },
         {
           key: 'email',
           sortable: false
         },
+
         {
           key: 'phone',
           sortable: false
@@ -259,6 +264,12 @@ export default {
           `${process.env.BACKEND_USERS_ENDPOINT}`,
           config
         )
+        this.$store.dispatch('toast/setToast', {
+          name: 'Success',
+          variant: 'success',
+          text: `Users Fetch complete.`,
+          delay: 5000
+        })
         const response = await data
         this.allUsers = response
         this.usersLoading = false
