@@ -89,7 +89,12 @@
           <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
         </b-button>
 
-        <b-button class="ml-auto" variant="light" @click="deleteUser(user.id)">
+        <b-button
+          class="ml-auto"
+          variant="light"
+          :disabled="deleteLoading"
+          @click="deleteUser(user.id)"
+        >
           <span
             v-if="deleteLoading"
             class="spinner-border spinner-border-sm"
@@ -340,6 +345,7 @@ export default {
               })
             })
         } else {
+          this.deleteLoading = false
           this.$swal("That user's data is safe!")
         }
       })

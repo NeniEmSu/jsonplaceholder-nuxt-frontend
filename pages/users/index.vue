@@ -95,6 +95,7 @@
                   v-else
                   class="ml-auto"
                   variant="light"
+                  :disabled="deleteLoading"
                   @click="deleteUser(data.item.id)"
                 >
                   <b-icon
@@ -152,7 +153,7 @@ export default {
       addState: false,
       sortBy: 'Total',
       sortDesc: true,
-      deleteLoding: false,
+      deleteLoading: false,
       fields: [
         { key: 'No', stickyColumn: true, isRowHeader: true, sortable: true },
         {
@@ -303,7 +304,7 @@ export default {
           'Content-type': 'application/json; charset=UTF-8'
         }
       }
-      this.deleteLoding = true
+      this.deleteLoading = true
       this.$swal({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -317,7 +318,7 @@ export default {
           this.$axios
             .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`, config)
             .then((response) => {
-              this.deleteLoding = true
+              this.deleteLoading = true
               this.getAllUsers()
               this.$swal({
                 text: "Poof! You've sucessfully deleted that user!",
@@ -325,7 +326,7 @@ export default {
               })
             })
             .catch((error) => {
-              this.deleteLoding = false
+              this.deleteLoading = false
               this.$swal(
                 'Error',
                 `Somethimg went wrong, Error: ${error}`,
@@ -333,6 +334,7 @@ export default {
               )
             })
         } else {
+          this.deleteLoading = false
           this.$swal('The user detail is safe!')
         }
       })
