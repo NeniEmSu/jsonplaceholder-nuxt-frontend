@@ -347,7 +347,7 @@ export default {
             this.$emit('Call-Get-Fuction')
             this.$swal(
               'Success',
-              `New User: ${response.username}, with email address: ${response.email} Added Successfully`,
+              `New User: ${response.username}, with email address: ${response.email} was added successfully`,
               'success'
             )
           })

@@ -18,6 +18,7 @@
             :adding="adding"
             :user-details="userDetails"
             @Call-Get-Fuction="callGetUsers"
+            @Reset-State="resetFormState"
             @Close-Form="addState = false"
           />
           <div class="my-2">
@@ -139,7 +140,7 @@ export default {
           city: null
         },
         company: {
-          compName: null,
+          name: null,
           bs: null,
           catchPhrase: null
         }
@@ -249,6 +250,27 @@ export default {
   },
 
   methods: {
+    resetFormState() {
+      this.userDetails = {
+        name: null,
+        username: null,
+        website: null,
+        phone: null,
+        email: null,
+        address: {
+          street: null,
+          suite: null,
+          zipcode: null,
+          city: null
+        },
+        company: {
+          name: null,
+          bs: null,
+          catchPhrase: null
+        }
+      }
+    },
+
     getfilteredData(search) {
       this.filteredData = this.allUsers
       let filteredDataBySearch = []
