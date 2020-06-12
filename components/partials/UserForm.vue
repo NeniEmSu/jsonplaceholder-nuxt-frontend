@@ -38,48 +38,83 @@
               >
                 <b-form-input
                   id="username"
-                  v-model="userDetails.username"
+                  v-model="$v.userDetails.username.$model"
                   type="text"
                   required
                   placeholder="Enter your username"
                   :class="[
-                    !$v.username.$error && $v.username.minLength
+                    !$v.userDetails.username.$error &&
+                    $v.userDetails.username.$model &&
+                    $v.userDetails.username.minLength
                       ? 'is-valid'
                       : '',
-                    $v.username.$error && !$v.username.minLength
+                    $v.userDetails.username.$error &&
+                    !$v.userDetails.username.minLength
                       ? 'is-invalid'
                       : ''
                   ]"
-                  :state="$v.username.$dirty ? !$v.username.$error : null"
+                  :state="
+                    $v.userDetails.username.$dirty
+                      ? !$v.userDetails.username.$error
+                      : null
+                  "
                 ></b-form-input>
-                <small v-if="$v.username.required" class="text-danger"
+                <small
+                  v-if="
+                    !$v.userDetails.username.required &&
+                      $v.userDetails.username.$dirty
+                  "
+                  class="text-danger"
                   >Username is required.</small
                 >
-                <small v-if="!$v.username.minLength" class="text-danger"
+                <small
+                  v-if="!$v.userDetails.username.minLength"
+                  class="text-danger"
                   >username must have at least
-                  {{ $v.Username.$params.minLength.min }} letters.</small
+                  {{ $v.userDetails.username.$params.minLength.min }}
+                  letters.</small
                 >
               </b-form-group>
 
               <b-form-group label="Email:*" label-for="email" class="col-sm-6">
+                <!-- v-model="userDetails.email" -->
                 <b-form-input
                   id="email"
-                  v-model="userDetails.email"
+                  v-model="$v.userDetails.email.$model"
                   type="text"
                   required
                   placeholder="Enter your email"
                   :class="[
-                    !$v.email.$error ? 'is-valid' : '',
-                    $v.email.$error ? 'is-invalid' : ''
+                    !$v.userDetails.email.$error &&
+                    $v.userDetails.email.$model &&
+                    $v.userDetails.email.minLength
+                      ? 'is-valid'
+                      : '',
+                    $v.userDetails.email.$error &&
+                    !$v.userDetails.email.minLength
+                      ? 'is-invalid'
+                      : ''
                   ]"
-                  :state="$v.email.$dirty ? !$v.email.$error : null"
+                  :state="
+                    $v.userDetails.email.$dirty
+                      ? !$v.userDetails.email.$error
+                      : null
+                  "
                 ></b-form-input>
-                <small v-if="$v.email.required" class="text-danger"
+                <small
+                  v-if="
+                    !$v.userDetails.email.required &&
+                      $v.userDetails.email.$dirty
+                  "
+                  class="text-danger"
                   >Email is required.</small
                 >
-                <small v-if="!$v.email.minLength" class="text-danger"
+                <small
+                  v-if="!$v.userDetails.email.minLength"
+                  class="text-danger"
                   >Email must have at least
-                  {{ $v.email.$params.minLength.min }} letters.</small
+                  {{ $v.userDetails.email.$params.minLength.min }}
+                  letters.</small
                 >
               </b-form-group>
 
@@ -231,7 +266,24 @@ export default {
     },
     userDetails: {
       // eslint-disable-next-line vue/require-valid-default-prop
-      default: {},
+      default: {
+        name: null,
+        username: null,
+        website: null,
+        phone: null,
+        email: null,
+        address: {
+          street: null,
+          suite: null,
+          zipcode: null,
+          city: null
+        },
+        company: {
+          name: null,
+          bs: null,
+          catchPhrase: null
+        }
+      },
       type: Object
     }
   },
@@ -244,13 +296,16 @@ export default {
   },
 
   validations: {
-    username: {
-      required,
-      minLength: minLength(4)
-    },
-    email: {
-      required,
-      minLength: minLength(4)
+    userDetails: {
+      username: {
+        required,
+        minLength: minLength(4)
+      },
+
+      email: {
+        required,
+        minLength: minLength(4)
+      }
     }
   },
 
@@ -288,26 +343,13 @@ export default {
             config
           )
           .then((response) => {
-            this.userDetails = {
-              name: null,
-              username: null,
-              website: null,
-              phone: null,
-              email: null,
-              address: {
-                street: null,
-                suite: null,
-                zipcode: null,
-                city: null
-              },
-              company: {
-                name: null,
-                bs: null,
-                catchPhrase: null
-              }
-            }
+            this.$emit('Reset-State')
             this.$emit('Call-Get-Fuction')
-            this.$swal('Success', 'New User Added Successfully', 'success')
+            this.$swal(
+              'Success',
+              `New User: ${response.username}, with email address: ${response.email} Added Successfully`,
+              'success'
+            )
           })
       } catch (error) {
         this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
