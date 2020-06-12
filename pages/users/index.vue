@@ -54,7 +54,7 @@
               <template v-slot:thead-top="">
                 <b-tr>
                   <b-th colspan="1" variant="primary">Index</b-th>
-                  <b-th colspan="3" variant="secondary">
+                  <b-th colspan="4" variant="secondary">
                     User Data
                   </b-th>
                   <b-th colspan="2" variant="success">
