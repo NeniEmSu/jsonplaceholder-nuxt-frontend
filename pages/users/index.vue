@@ -339,7 +339,7 @@ export default {
           this.$axios
             .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`, config)
             .then((response) => {
-              this.deleteLoading = true
+              this.deleteLoading = false
               this.getAllUsers()
               this.$swal({
                 text: "Poof! You've sucessfully deleted that user!",
