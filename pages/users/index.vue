@@ -341,7 +341,7 @@ export default {
   },
   head() {
     return {
-      title: 'Users.',
+      title: 'Users',
       titleTemplate: 'ETT - %s!',
       meta: [
         {
