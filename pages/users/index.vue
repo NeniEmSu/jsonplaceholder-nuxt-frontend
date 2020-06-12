@@ -63,6 +63,15 @@
                   </b-th>
                 </b-tr>
               </template>
+              <template v-slot:cell(username)="data">
+                <nuxt-link
+                  :to="{
+                    name: 'users-id-username',
+                    params: { id: data.item.id, username: data.item.username }
+                  }"
+                  >{{ data.item.username }}</nuxt-link
+                >
+              </template>
               <template v-slot:cell(email)="data">
                 <a :href="`mailto:${data.item.email}`">{{ data.item.email }}</a>
               </template>
