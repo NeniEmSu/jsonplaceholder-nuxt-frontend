@@ -11,7 +11,6 @@
         <li>view a list of users</li>
         <li>Search a user by username</li>
         <li>Add a new user</li>
-        <li>Add a new user</li>
         <li>Edit an existing user</li>
         <li>Delete a user</li>
       </ul>

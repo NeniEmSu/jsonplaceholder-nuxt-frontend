@@ -85,12 +85,16 @@
       </div>
       <div class="d-flex align-items-center">
         <h1>More About {{ user.username }}</h1>
-        <b-button class="ml-4" variant="light" @click="editState = !editState">
+        <b-button
+          class="ml-4 d-none d-sm-block"
+          variant="light"
+          @click="editState = !editState"
+        >
           <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
         </b-button>
 
         <b-button
-          class="ml-auto"
+          class="ml-auto d-none d-sm-block"
           variant="light"
           :disabled="deleteLoading"
           @click="deleteUser(user.id)"
@@ -133,7 +137,7 @@
               ><b-icon class="bigger-120" icon="pencil-square" font-scale="1.5">
               </b-icon>
               <span class="bigger-110">
-                Update {{ user.username }}'s details.</span
+                Update {{ user.username | truncate(5, '...') }}'s details.</span
               >
             </b-button>
 
@@ -142,10 +146,17 @@
               @click="editState = !editState"
               ><b-icon class="bigger-120" icon="trash-fill" font-scale="1.5">
               </b-icon>
-              <span class="bigger-110"> Delete {{ user.username }}.</span>
+              <span
+                v-if="deleteLoading"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span v-else class="bigger-110">
+                Delete {{ user.username | truncate(5, '...') }}.</span
+              >
             </b-button>
           </div>
-          <!-- /.col -->
 
           <div class="col-xs-12 col-sm-9">
             <h4 class="blue">
@@ -273,6 +284,15 @@ import UserForm from '~/components/partials/UserForm'
 export default {
   components: {
     UserForm
+  },
+  filters: {
+    truncate(text, length, suffix) {
+      if (text.length > length) {
+        return text.substring(0, length) + suffix
+      } else {
+        return text
+      }
+    }
   },
   data() {
     return {

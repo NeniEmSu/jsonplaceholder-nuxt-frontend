@@ -69,11 +69,12 @@
                   {{ $v.email.$params.minLength.min }} letters.</small
                 >
               </b-form-group>
+
               <b-form-group label="Phone:" label-for="phone" class="col-sm-6">
                 <b-form-input
                   id="phone"
                   v-model="userDetails.phone"
-                  type="number"
+                  type="text"
                   placeholder="Enter your phone number"
                 ></b-form-input>
               </b-form-group>
@@ -153,10 +154,10 @@
                     class="col-sm-6"
                   >
                     <b-form-input
-                      id="street"
-                      v-model="userDetails.company.compName"
+                      id="compName"
+                      v-model="userDetails.company.name"
                       type="text"
-                      placeholder="Enter your home company name"
+                      placeholder="Enter your company name"
                     ></b-form-input>
                   </b-form-group>
 
@@ -270,8 +271,8 @@ export default {
           )
           .then((response) => {
             this.userDetails = {
-              name: '',
-              username: '',
+              name: null,
+              username: null,
               website: null,
               phone: null,
               email: null,
@@ -282,7 +283,7 @@ export default {
                 city: null
               },
               company: {
-                compName: null,
+                name: null,
                 bs: null,
                 catchPhrase: null
               }
