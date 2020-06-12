@@ -79,6 +79,7 @@
               v-if="editState"
               :user-details="userDetails"
               @Call-Get-Fuction="callGetUser"
+              @Close-Form="editState = false"
             />
           </div>
         </div>

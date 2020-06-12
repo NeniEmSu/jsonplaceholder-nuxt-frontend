@@ -4,9 +4,22 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <div class="card-title mb-4">
+            <div class="card-title mb-4 d-flex">
               <h3 v-if="adding">Add User</h3>
               <h3 v-else>Edit User</h3>
+              <b-button
+                class="ml-auto d-none d-sm-block"
+                variant="light"
+                @click="closeForm()"
+              >
+                <b-icon
+                  icon="x-circle-fill"
+                  color="danger"
+                  variant="danger"
+                  font-scale="1.5"
+                >
+                </b-icon>
+              </b-button>
             </div>
             <form class="row" @submit.prevent="mutateUser">
               <b-form-group label="Name:" label-for="name" class="col-sm-6">
@@ -251,10 +264,15 @@ export default {
   },
 
   methods: {
+    closeForm() {
+      this.$emit('Close-Form')
+    },
+
     mutateUser() {
       if (this.adding) return this.addNewUser()
       return this.editUser()
     },
+
     async addNewUser() {
       const config = {
         headers: {
@@ -296,6 +314,7 @@ export default {
       }
       this.addLoading = false
     },
+
     async editUser() {
       const config = {
         headers: {

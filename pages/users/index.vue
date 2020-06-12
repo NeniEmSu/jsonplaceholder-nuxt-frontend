@@ -18,11 +18,12 @@
             :adding="adding"
             :user-details="userDetails"
             @Call-Get-Fuction="callGetUsers"
+            @Close-Form="addState = false"
           />
           <div class="my-2">
             <div class="d-flex">
               <button class="btn btn-info my-3" @click="initForm">
-                {{ addState ? 'Cancel' : 'Add New User' }}
+                {{ addState ? 'Cancel' : 'Add User' }}
               </button>
               <b-form-group class="col-sm ml-auto my-auto">
                 <b-input-group>
@@ -56,7 +57,7 @@
                   <b-th colspan="3" variant="secondary">
                     User Data
                   </b-th>
-                  <b-th colspan="3" variant="success">
+                  <b-th colspan="2" variant="success">
                     Action
                   </b-th>
                 </b-tr>
