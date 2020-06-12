@@ -33,11 +33,11 @@
 
               <b-form-group
                 label="UserName:*"
-                label-for="name"
+                label-for="username"
                 class="col-sm-6"
               >
                 <b-form-input
-                  id="name"
+                  id="username"
                   v-model="userDetails.username"
                   type="text"
                   required
@@ -193,7 +193,7 @@
                     class="col-sm-6"
                   >
                     <b-form-input
-                      id="city"
+                      id="bs"
                       v-model="userDetails.company.bs"
                       type="text"
                       placeholder="Enter your companies business statement"
