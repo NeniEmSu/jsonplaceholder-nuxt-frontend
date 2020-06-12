@@ -118,7 +118,7 @@
 <script>
 import _ from 'lodash'
 import UserForm from '~/components/partials/UserForm'
-/* eslint-disable no-console */
+
 export default {
   name: 'Users',
   components: {
@@ -221,8 +221,6 @@ export default {
       this.getfilteredData()
     },
     search: _.debounce(async function(value) {
-      // eslint-disable-next-line no-console
-      console.log(value)
       const route = {
         name: 'users'
       }
