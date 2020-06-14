@@ -25,10 +25,42 @@
               <b-form-group label="Title:" label-for="title" class="col-12">
                 <b-form-input
                   id="title"
-                  v-model="blogDetails.title"
+                  v-model="$v.blogDetails.title.$model"
+                  required
+                  :class="[
+                    !$v.blogDetails.title.$error &&
+                    $v.blogDetails.title.$model &&
+                    $v.blogDetails.title.minLength
+                      ? 'is-valid'
+                      : '',
+                    $v.blogDetails.title.$error &&
+                    !$v.blogDetails.title.minLength
+                      ? 'is-invalid'
+                      : ''
+                  ]"
+                  :state="
+                    $v.blogDetails.title.$dirty
+                      ? !$v.blogDetails.title.$error
+                      : null
+                  "
                   type="text"
                   placeholder="Enter title"
                 ></b-form-input>
+                <small
+                  v-if="
+                    !$v.blogDetails.title.required &&
+                      $v.blogDetails.title.$dirty
+                  "
+                  class="text-danger"
+                  >Title is required.</small
+                >
+                <small
+                  v-if="!$v.blogDetails.title.minLength"
+                  class="text-danger"
+                  >Title must have at least
+                  {{ $v.blogDetails.title.$params.minLength.min }}
+                  letters.</small
+                >
               </b-form-group>
 
               <b-form-group label="Body:" label-for="body" class="col-12">
@@ -87,11 +119,6 @@ export default {
   validations: {
     blogDetails: {
       title: {
-        required,
-        minLength: minLength(4)
-      },
-
-      body: {
         required,
         minLength: minLength(4)
       }

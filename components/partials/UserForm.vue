@@ -87,11 +87,14 @@
                   :class="[
                     !$v.userDetails.email.$error &&
                     $v.userDetails.email.$model &&
-                    $v.userDetails.email.minLength
+                    $v.userDetails.email.minLength &&
+                    $v.userDetails.email.email
                       ? 'is-valid'
                       : '',
                     $v.userDetails.email.$error &&
-                    !$v.userDetails.email.minLength
+                    !$v.userDetails.email.$model &&
+                    !$v.userDetails.email.minLength &&
+                    !$v.userDetails.email.email
                       ? 'is-invalid'
                       : ''
                   ]"
@@ -115,6 +118,9 @@
                   >Email must have at least
                   {{ $v.userDetails.email.$params.minLength.min }}
                   letters.</small
+                >
+                <small v-if="!$v.userDetails.email.email" class="text-danger"
+                  >Email is invalid!</small
                 >
               </b-form-group>
 
@@ -257,7 +263,7 @@
 </template>
 
 <script>
-import { required, minLength } from 'vuelidate/lib/validators'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 export default {
   props: {
     adding: {
@@ -304,14 +310,20 @@ export default {
 
       email: {
         required,
-        minLength: minLength(4)
+        email,
+        minLength: minLength(7)
       }
     }
   },
 
   computed: {
     isDisabled() {
-      if (this.userDetails.username === '' || this.userDetails.email === null) {
+      if (
+        this.userDetails.username === null ||
+        this.userDetails.email === null ||
+        this.$v.userDetails.username.$error ||
+        this.$v.userDetails.email.$error
+      ) {
         return !this.isValid
       }
       return this.isValid
