@@ -23,6 +23,7 @@ export default {
   css: ['sweetalert2/dist/sweetalert2.min.css'],
 
   plugins: [
+    { src: '~/plugins/bvToastGlobal.js', mode: 'client' },
     '~/plugins/vue-placeholders.js',
     '~/plugins/vuelidate.js',
     '~/plugins/bootstrap-vue-icon'
@@ -64,7 +65,14 @@ export default {
             return `/users/${user.id}/${user.username}`
           })
         })
-      return Promise.all([userRoute]).then((values) => {
+      const postsRoute = axios
+        .get(`${process.env.BACKEND_POSTS_ENDPOINT}`)
+        .then((res) => {
+          return res.data.map((post) => {
+            return `/blogs/${post.id}/${post.title}`
+          })
+        })
+      return Promise.all([userRoute, postsRoute]).then((values) => {
         return values.join().split(',')
       })
     }

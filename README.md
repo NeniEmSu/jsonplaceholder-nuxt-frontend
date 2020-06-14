@@ -7,7 +7,8 @@
 
 ```bash
    .env
-  BACKEND_USERS_ENDPOINT='link to api required'
+  BACKEND_USERS_ENDPOINT='link to users api required'
+  BACKEND_POSTS_ENDPOINT='link to posts api required'
   BASE_URL='link to front-end required'
 ```
 

@@ -140,10 +140,30 @@
               >
                 <b-form-input
                   id="website"
-                  v-model="userDetails.website"
+                  v-model="$v.userDetails.website.$model"
                   type="text"
                   placeholder="Enter your Website address"
+                  :class="[
+                    !$v.userDetails.website.$error &&
+                    $v.userDetails.website.url &&
+                    $v.userDetails.website.$model
+                      ? 'is-valid'
+                      : '',
+                    $v.userDetails.website.$error &&
+                    !$v.userDetails.website.url &&
+                    !$v.userDetails.website.$model
+                      ? 'is-invalid'
+                      : ''
+                  ]"
+                  :state="
+                    $v.userDetails.website.$dirty
+                      ? !$v.userDetails.website.$error
+                      : null
+                  "
                 ></b-form-input>
+                <small v-if="!$v.userDetails.website.url" class="text-danger"
+                  >Website url is invalid!</small
+                >
               </b-form-group>
 
               <div class="address col-12">
@@ -263,7 +283,7 @@
 </template>
 
 <script>
-import { required, minLength, email } from 'vuelidate/lib/validators'
+import { required, minLength, email, url } from 'vuelidate/lib/validators'
 export default {
   props: {
     adding: {
@@ -312,6 +332,10 @@ export default {
         required,
         email,
         minLength: minLength(7)
+      },
+
+      website: {
+        url
       }
     }
   },
