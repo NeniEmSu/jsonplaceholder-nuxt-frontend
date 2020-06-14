@@ -34,7 +34,7 @@
                   <b-input
                     v-model="search"
                     type="text"
-                    placeholder="Search by song title, artist, album or genre"
+                    placeholder="Search by Username"
                     required
                     name="Search"
                   />
