@@ -84,18 +84,14 @@
           </div>
         </div>
       </div>
-      <div class="d-flex align-items-center">
+      <div class="d-block d-sm-flex align-items-center">
         <h1>More About {{ user.username }}</h1>
-        <b-button
-          class="ml-4 d-none d-sm-block"
-          variant="light"
-          @click="editState = !editState"
-        >
+        <b-button class="ml-4" variant="light" @click="editState = !editState">
           <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
         </b-button>
 
         <b-button
-          class="ml-auto d-none d-sm-block"
+          class="ml-auto"
           variant="light"
           :disabled="deleteLoading"
           @click="deleteUser(user.id)"
@@ -122,11 +118,13 @@
             <span class="profile-picture">
               <b-img
                 id="avatar2"
-                src="https://image.shutterstock.com/image-vector/default-placeholder-fitness-trainer-tshirt-260nw-1064798171.jpg"
+                blank
+                blank-color="#ccc"
+                width="200"
                 fluid
                 editable
                 img-responsive
-                :alt="`${user.username}'s Avatar`"
+                :alt="`${user.username}'s Avatar placeholder`"
               ></b-img>
             </span>
 
