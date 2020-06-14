@@ -475,14 +475,6 @@ body {
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15);
 }
 
-.dd-empty,
-.dd-handle,
-.dd-placeholder,
-.dd2-content {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
-
 .profile-activity {
   padding: 10px 4px;
   border-bottom: 1px dotted #d0d8e0;
