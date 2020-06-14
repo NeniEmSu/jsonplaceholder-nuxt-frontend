@@ -95,6 +95,7 @@ export default {
   components: {
     BlogForm
   },
+
   data() {
     return {
       blogDetails: {
@@ -107,8 +108,7 @@ export default {
       filteredData: [],
       blogsLoading: false,
       deleteLoading: false,
-      addState: false,
-      initForm: false
+      addState: false
     }
   },
 
@@ -151,6 +151,10 @@ export default {
   },
 
   methods: {
+    initForm() {
+      this.addState = !this.addState
+    },
+
     resetFormState() {
       this.blogDetails = {
         title: null,

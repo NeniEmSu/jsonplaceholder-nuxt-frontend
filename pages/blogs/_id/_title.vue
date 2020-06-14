@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="d-block d-sm-flex align-items-center mb-2">
-        <h1>{{ blog.title }}</h1>
+        <h1 class="text-capitalize">{{ blog.title }}</h1>
         <b-button class="ml-4" variant="light" @click="editState = !editState">
           <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
         </b-button>
@@ -81,6 +81,46 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="mt-4" v-html="blog.body"></div>
     </template>
+
+    <div class="comments mt-5">
+      <h3>Comments:</h3>
+      <template v-if="loadingComments">
+        <content-placeholders v-for="(n, index) in 5" :key="index" class="my-3">
+          <b-media>
+            <template v-slot:aside>
+              <b-img
+                blank
+                blank-color="#ccc"
+                width="80"
+                alt="placeholder"
+              ></b-img>
+            </template>
+            <content-placeholders-heading class="mt-2 mb-1" />
+            <content-placeholders-text :lines="2" class="mt-1 mb-2" />
+          </b-media>
+        </content-placeholders>
+      </template>
+      <template v-else>
+        <b-card v-for="comment in comments" :key="comment.id" class="my-3">
+          <b-media>
+            <template v-slot:aside>
+              <b-img
+                blank
+                blank-color="#ccc"
+                width="64"
+                alt="placeholder"
+              ></b-img>
+            </template>
+
+            <h5 class="mt-0 text-capitalize">{{ comment.name }}</h5>
+            <small> By: {{ comment.email }}</small>
+            <p class="mb-0">
+              {{ comment.body }}
+            </p>
+          </b-media>
+        </b-card>
+      </template>
+    </div>
   </section>
 </template>
 
@@ -104,13 +144,16 @@ export default {
       deleteLoading: false,
       blogDetails: {},
       author: {},
+      comments: [],
       error: '',
       editState: false,
-      blogLoading: false
+      blogLoading: false,
+      loadingComments: false
     }
   },
   created() {
     this.getBlog()
+    this.getComments()
   },
   methods: {
     goBack() {
@@ -133,6 +176,18 @@ export default {
       } catch (error) {
         this.$swal('Error', error.response.data.error, 'error')
       }
+    },
+    async getComments() {
+      this.loadingComments = true
+      try {
+        const data = await this.$axios.$get(
+          `${process.env.BACKEND_USERS_ENDPOINT}/${this.$route.params.id}/comments`
+        )
+        this.comments = await data
+      } catch (error) {
+        this.$swal('Error', error.response.data.error, 'error')
+      }
+      this.loadingComments = false
     },
     async getBlog() {
       this.blogLoading = true
