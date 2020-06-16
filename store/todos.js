@@ -1,4 +1,5 @@
 import axios from 'axios'
+const URL = `${process.env.BACKEND_ENDPOINT}`
 
 export const state = () => ({
   todos: [],
@@ -7,20 +8,16 @@ export const state = () => ({
 })
 
 export const actions = {
-  async getAllTodos({ commit, dispatch }, state) {
+  async getAllTodos({ commit, dispatch }, context, state) {
     commit('SET_LOADING')
-    const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/todos'
-    )
+    const response = await axios.get(`${URL}/todos`)
     const data = await response.data
     await dispatch('getAuthors')
     commit('SET_TODOS', data)
   },
 
   async getAuthors({ commit }, state) {
-    const response = await axios.get(
-      'https://jsonplaceholder.typicode.com/users'
-    )
+    const response = await axios.get(`${URL}/users`)
     const data = await response.data
     commit('SET_USERS', data)
   }
