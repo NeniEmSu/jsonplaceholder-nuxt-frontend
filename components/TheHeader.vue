@@ -9,6 +9,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
+          <b-nav-item to="/todos">Todos</b-nav-item>
           <b-nav-item to="/blogs">Blogs</b-nav-item>
           <b-nav-item to="/users">Users</b-nav-item>
         </b-navbar-nav>
