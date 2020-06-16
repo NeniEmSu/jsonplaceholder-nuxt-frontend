@@ -243,7 +243,7 @@ export default {
   head() {
     return {
       title: this.$route.params.title,
-      titleTemplate: 'ETT - %s!',
+      titleTemplate: '%s - Json Placeholder Nuxt Frontend!',
       meta: [
         {
           hid: 'description',

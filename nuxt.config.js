@@ -43,7 +43,9 @@ export default {
     '@nuxtjs/robots',
     '@nuxtjs/sitemap'
   ],
-  axios: {},
+  axios: {
+    proxy: false
+  },
   robots: () => {
     return {
       Sitemap: '/sitemap.xml'

@@ -2,10 +2,10 @@
   <div class="container">
     <div class="mt-5">
       <h1 class="title">
-        Edicasoft Vue users Test Task
+        JsonPlaceHolder + Nuxt Frontend.
       </h1>
       <p class="subtitle">
-        An interface that allows to:
+        Consuming Json Placehosder to get interface that allows to:
       </p>
       <ul>
         <li>view a list of users</li>

@@ -373,7 +373,7 @@ export default {
   head() {
     return {
       title: 'Users',
-      titleTemplate: 'ETT - %s!',
+      titleTemplate: '%s - Json Placeholder Nuxt Frontend!',
       meta: [
         {
           hid: 'description',

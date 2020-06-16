@@ -210,7 +210,7 @@ export default {
   head() {
     return {
       title: 'Blogs',
-      titleTemplate: 'ETT - %s!',
+      titleTemplate: '%s - Json Placeholder Nuxt Frontend!',
       meta: [
         {
           hid: 'description',

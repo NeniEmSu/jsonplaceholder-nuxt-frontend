@@ -1,7 +1,7 @@
 {
-  "name": "edicasoft-vue-test-task",
+  "name": "jsonplaceholder-nuxt-frontend",
   "version": "1.0.0",
-  "description": "an interface that allows to view a list of users, search a user by username, add a new user, edit an existing user, delete a user.",
+  "description": "consuming json placehosder to get an interface that allows to view a list of users, search a user by username, add a new user, edit an existing user, delete a user.",
   "author": "NeniEmsu",
   "private": true,
   "scripts": {

@@ -42,6 +42,20 @@ export default {
   created() {
     this.$store.dispatch('todos/getAllTodos')
     // this.$store.dispatch('todos/getAuthors')
+  },
+  head() {
+    return {
+      title: 'Todos',
+      titleTemplate: '%s - Json Placeholder Nuxt Frontend!',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            'View a list of blogs, search a blog by blogname, add a new blog, navigate to edit an existing blog, delete a blog.'
+        }
+      ]
+    }
   }
 }
 </script>
