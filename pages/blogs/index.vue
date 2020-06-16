@@ -63,10 +63,10 @@
                     alt="placeholder"
                   ></b-img>
                 </template>
-                <h5 class="mt-1 mb-1">{{ blog.title }}</h5>
+                <h4 class="mt-1 mb-1">{{ blog.title }}</h4>
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <div class="mb-2" v-html="blog.body"></div>
-                <b-button
+                <nuxt-link
                   class="ml-auto"
                   variant="light"
                   :aria-label="`Link to ${blog.title} `"
@@ -75,8 +75,8 @@
                     params: { id: blog.id, title: blog.title }
                   }"
                 >
-                  <b-icon icon="eye" color="primary" variant="primary"></b-icon>
-                </b-button>
+                  Read More
+                </nuxt-link>
               </b-media>
             </div>
           </div>
