@@ -1,12 +1,13 @@
 <template>
-  <section class="mt-5">
-    <div class="container">
+  <section class="container mt-5">
+    <div>
       <h1>
         Blogs
       </h1>
 
       <template v-if="blogsLoading">
         <content-placeholders v-for="(n, index) in 5" :key="index" class="my-3">
+          <content-placeholders-heading class="mt-2 mb-1" />
           <b-media right-align vertical-align="center">
             <template v-slot:aside>
               <b-img
@@ -23,7 +24,7 @@
       </template>
 
       <template v-else>
-        <section class="mt-2 container">
+        <section class="mt-2">
           <BlogForm
             v-if="addState"
             :adding="adding"
