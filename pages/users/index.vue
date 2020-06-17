@@ -303,13 +303,6 @@ export default {
           `${process.env.BACKEND_USERS_ENDPOINT}`,
           config
         )
-        this.$store.dispatch('toast/setToast', {
-          name: 'Success',
-          title: 'Success!',
-          variant: 'success',
-          text: `Users Fetch complete.`,
-          delay: 5000
-        })
         const response = await data
         this.allUsers = response
         this.usersLoading = false

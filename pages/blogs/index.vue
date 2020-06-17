@@ -186,13 +186,6 @@ export default {
           `${process.env.BACKEND_POSTS_ENDPOINT}`,
           config
         )
-        this.$store.dispatch('toast/setToast', {
-          name: 'Success',
-          title: 'Success!',
-          variant: 'success',
-          text: `Blogs Fetch complete.`,
-          delay: 5000
-        })
         const response = await data
         this.allBlogs = response
         this.blogsLoading = false

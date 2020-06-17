@@ -11,6 +11,16 @@
       </content-placeholders>
     </template>
     <template v-else>
+      <div class="legends">
+        <div class="legend">
+          <div class="bg-success"></div>
+          <h5>Completed</h5>
+        </div>
+        <div class="legend">
+          <div class="bg-secondary"></div>
+          <h5>Uncompleted</h5>
+        </div>
+      </div>
       <div class="todos mt-2">
         <b-card
           v-for="todo in todos.todos"
@@ -23,6 +33,24 @@
           <b-card-text>
             {{ todo.title }}
           </b-card-text>
+
+          <div class="d-flex justify-content-around">
+            <b-icon
+              class="edit-icon"
+              icon="pencil"
+              font-scale="1.5"
+              @click="editTodo(todo.id)"
+            ></b-icon>
+
+            <b-icon
+              class="delete-icon"
+              icon="trash-fill"
+              color="danger"
+              variant="danger"
+              font-scale="1.5"
+              @click="deleteUser(todo.id)"
+            ></b-icon>
+          </div>
         </b-card>
       </div>
     </template>
@@ -65,5 +93,37 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+
+  @media screen and (max-width: 573px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 335px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.delete-icon,
+.edit-icon {
+  cursor: pointer;
+}
+
+.legends {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
+    div {
+      margin: auto 5px;
+      height: 10px;
+      width: 10px;
+      align-self: center;
+    }
+  }
 }
 </style>

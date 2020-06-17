@@ -32,7 +32,7 @@
 </template>
 
 <style lang="scss" scoped>
-.navbar-dark .navbar-nav .nav-link .nuxt-link-exact-active {
+.nuxt-link-exact-active {
   color: rgba(255, 255, 255, 1) !important;
 }
 </style>
