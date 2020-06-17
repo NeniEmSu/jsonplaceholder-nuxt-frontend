@@ -35,8 +35,8 @@ export default {
   components: {},
   head() {
     return {
-      title: '',
-      titleTemplate: 'ETT - %s!',
+      title: 'Home',
+      titleTemplate: '%s - Json Placeholder Nuxt Frontend!',
       meta: [
         {
           hid: 'description',
