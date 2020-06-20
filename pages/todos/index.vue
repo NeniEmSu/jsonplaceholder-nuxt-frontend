@@ -10,6 +10,14 @@
         />
       </content-placeholders>
     </template>
+    <template v-else-if="todos.errors.length > 0">
+      <strong>Something Went wrong:</strong>
+      <b-alert
+        v-for="(error, index) in todoos.errors"
+        :key="index"
+        variant="danger"
+      ></b-alert>
+    </template>
     <template v-else>
       <div class="legends">
         <div class="legend">
@@ -28,29 +36,21 @@
           :bg-variant="todo.completed ? 'success' : 'secondary'"
           text-variant="white"
           :header="`By: ${todos.users[todo.userId - 1].username}`"
-          class="text-center"
+          class=""
         >
-          <b-card-text>
+          <b-card-text class="d-flex justify-content-between">
             {{ todo.title }}
+            <div>
+              <b-icon
+                class="delete-icon"
+                icon="trash-fill"
+                color="danger"
+                variant="danger"
+                font-scale="1.5"
+                @click="deleteUser(todo.id)"
+              ></b-icon>
+            </div>
           </b-card-text>
-
-          <div class="d-flex justify-content-around">
-            <b-icon
-              class="edit-icon"
-              icon="pencil"
-              font-scale="1.5"
-              @click="editTodo(todo.id)"
-            ></b-icon>
-
-            <b-icon
-              class="delete-icon"
-              icon="trash-fill"
-              color="danger"
-              variant="danger"
-              font-scale="1.5"
-              @click="deleteUser(todo.id)"
-            ></b-icon>
-          </div>
         </b-card>
       </div>
     </template>

@@ -4,26 +4,45 @@ const URL = `${process.env.BACKEND_ENDPOINT}`
 export const state = () => ({
   todos: [],
   users: [],
+  errors: [],
   loading: false
 })
 
 export const actions = {
   async getAllTodos({ commit, dispatch }, context, state) {
-    commit('SET_LOADING')
-    const response = await axios.get(`${URL}/todos`)
-    const data = await response.data
-    await dispatch('getAuthors')
-    commit('SET_TODOS', data)
+    try {
+      commit('SET_LOADING')
+      commit('CLEAR_ERRORS')
+      const response = await axios.get(`${URL}/todos`)
+      const data = await response.data
+      await dispatch('getAuthors')
+      commit('SET_TODOS', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
   },
 
   async getAuthors({ commit }, state) {
-    const response = await axios.get(`${URL}/users`)
-    const data = await response.data
-    commit('SET_USERS', data)
+    try {
+      const response = await axios.get(`${URL}/users`)
+      const data = await response.data
+      commit('SET_USERS', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
   }
 }
 
 export const mutations = {
+  CLEAR_ERRORS(state, error) {
+    state.errors = []
+  },
+
+  SET_ERRORS(state, error) {
+    state.errors.push(error)
+    state.loading = false
+  },
+
   SET_LOADING(state) {
     state.loading = true
   },
