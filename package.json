@@ -22,7 +22,6 @@
     "nuxt": "^2.0.0",
     "vue-content-placeholders": "^0.2.1",
     "vue-sweetalert2": "^3.0.5",
-    "vue2-touch-events": "^2.2.1",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {
