@@ -56,6 +56,9 @@
               type="text"
               @keyup.enter="updateTodoTitle(todo)"
             ></b-input>
+            <small id="edit-titile-form-helper"
+              >Edit text & then click enter to update.</small
+            >
           </div>
 
           <b-card-text
