@@ -1,8 +1,8 @@
 <template>
-  <b-form-group class="row d-flex">
+  <b-form-group class="">
     <b-input-group>
       <b-input-group-prepend is-text>
-        <b-icon icon="plus" font-scale="1.5"> </b-icon>
+        <b-icon icon="plus-circle" font-scale="1.5"> </b-icon>
       </b-input-group-prepend>
       <b-input
         v-model="title"

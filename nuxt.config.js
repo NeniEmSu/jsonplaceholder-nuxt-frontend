@@ -24,6 +24,7 @@ export default {
 
   plugins: [
     { src: '~/plugins/bvToastGlobal.js', mode: 'client' },
+    { src: '~/plugins/vue-touch-event.js', mode: 'client' },
     '~/plugins/vue-placeholders.js',
     '~/plugins/vuelidate.js',
     '~/plugins/bootstrap-vue-icon'

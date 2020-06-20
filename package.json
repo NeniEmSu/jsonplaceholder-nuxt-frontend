@@ -20,9 +20,10 @@
     "bootstrap": "^4.1.3",
     "bootstrap-vue": "^2.0.0",
     "nuxt": "^2.0.0",
+    "vue-content-placeholders": "^0.2.1",
     "vue-sweetalert2": "^3.0.5",
-    "vuelidate": "^0.7.5",
-    "vue-content-placeholders": "^0.2.1"
+    "vue2-touch-events": "^2.2.1",
+    "vuelidate": "^0.7.5"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^2.0.0",

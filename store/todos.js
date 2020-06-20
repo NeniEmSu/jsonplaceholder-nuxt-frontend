@@ -22,6 +22,16 @@ export const actions = {
     }
   },
 
+  async getLimitedTodos({ commit }, amount) {
+    try {
+      const response = await axios.get(`${URL}/todos?_limit=${amount}`)
+      const data = await response.data
+      commit('SET_TODOS', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
+  },
+
   async getAuthors({ commit }, state) {
     try {
       const response = await axios.get(`${URL}/users`)
@@ -54,6 +64,16 @@ export const actions = {
     } catch (error) {
       commit('SET_ERRORS', error)
     }
+  },
+
+  async updateTodo({ commit }, updatedTodo) {
+    try {
+      await axios.put(`${URL}/todos/${updatedTodo.id}`)
+
+      commit('UPDATE_TODO', updatedTodo)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
   }
 }
 
@@ -78,6 +98,13 @@ export const mutations = {
 
   ADD_NEW_TODO(state, data) {
     state.todos.unshift(data)
+  },
+
+  UPDATE_TODO(state, updatedTodo) {
+    const index = state.todos.findIndex((todo) => todo.id === updatedTodo.id)
+    if (index !== -1) {
+      state.todos.splice(index, 1, updatedTodo)
+    }
   },
 
   REMOVE_DELETED_TODO(state, id) {

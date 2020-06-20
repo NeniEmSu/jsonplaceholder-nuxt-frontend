@@ -4,23 +4,30 @@
     <template v-if="todos.errors.length > 0">
       <strong>Something Went wrong:</strong>
       <b-alert
-        v-for="(error, index) in todoos.errors"
+        v-for="(error, index) in todos.errors"
         :key="index"
         variant="danger"
       ></b-alert>
     </template>
     <template v-if="todos.loading">
-      <content-placeholders class="my-3 todos">
-        <content-placeholders-img
-          v-for="(n, index) in 8"
-          :key="index"
-          class="todo"
-        />
+      <content-placeholders class="my-3 ">
+        <content-placeholders-heading />
+        <div class="todos mt-3">
+          <content-placeholders-img
+            v-for="(n, index) in 8"
+            :key="index"
+            class="todo"
+          />
+        </div>
       </content-placeholders>
     </template>
     <template v-else>
       <AddTodoForm />
-      <div class="legends">
+      <FilterTofoAmout />
+      <div class="legends mt-3">
+        <div class="legend">
+          <h5>Double click/tap toggle completion.</h5>
+        </div>
         <div class="legend">
           <div class="bg-success"></div>
           <h5>Completed</h5>
@@ -40,6 +47,7 @@
             `By: ${todos.users[todo.userId ? todo.userId - 1 : 5].username}`
           "
           class=""
+          @dblclick="setToCompleted(todo)"
         >
           <b-card-text class="d-flex justify-content-between">
             {{ todo.title }}
@@ -63,10 +71,12 @@
 <script>
 import { mapState } from 'vuex'
 import AddTodoForm from '~/components/partials/AddTodoForm'
+import FilterTofoAmout from '~/components/partials/FilterTodoAmout'
 export default {
   name: 'Todos',
   components: {
-    AddTodoForm
+    AddTodoForm,
+    FilterTofoAmout
   },
   data() {
     return {}
@@ -81,8 +91,15 @@ export default {
   methods: {
     deleteTodo(id) {
       this.$store.dispatch('todos/deleteSingleTodo', id)
-      // eslint-disable-next-line no-console
-      console.log(id)
+    },
+    setToCompleted(todo) {
+      const updatedTodo = {
+        id: todo.id,
+        title: todo.title,
+        completed: !todo.completed,
+        userId: todo.userId
+      }
+      this.$store.dispatch('todos/updateTodo', updatedTodo)
     }
   },
   head() {
@@ -108,7 +125,7 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 
-  @media screen and (max-width: 573px) {
+  @media screen and (max-width: 767px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -124,19 +141,35 @@ export default {
 
 .legends {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .legend {
     display: flex;
     justify-content: center;
     justify-items: center;
-    align-content: center;
+    align-self: center;
+
+    &:first-child {
+      @media screen and (max-width: 767px) {
+        width: 100%;
+      }
+    }
+
     div {
       margin: auto 5px;
       height: 10px;
       width: 10px;
       align-self: center;
+    }
+
+    h5 {
+      align-self: center;
+      align-content: center;
     }
   }
 }
