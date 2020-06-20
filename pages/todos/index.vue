@@ -26,6 +26,9 @@
       <FilterTofoAmout />
       <div class="legends mt-3">
         <div class="legend">
+          <h5>Click/tap todo text to edit.</h5>
+        </div>
+        <div class="legend">
           <h5>Double click/tap toggle completion.</h5>
         </div>
         <div class="legend">
@@ -39,7 +42,7 @@
       </div>
       <div class="todos mt-2">
         <b-card
-          v-for="todo in todos.todos"
+          v-for="(todo, index) in todos.todos"
           :key="todo.id"
           :bg-variant="todo.completed ? 'success' : 'secondary'"
           text-variant="white"
@@ -47,7 +50,19 @@
           class=""
           @dblclick="setToCompleted(todo)"
         >
-          <b-card-text class="d-flex justify-content-between">
+          <div v-if="updating.value === true && updating.number === index">
+            <b-input
+              v-model="title"
+              type="text"
+              @keyup.enter="updateTodoTitle(todo)"
+            ></b-input>
+          </div>
+
+          <b-card-text
+            v-else
+            class="d-flex justify-content-between"
+            @click="selectTodoToUpdate(todo)"
+          >
             {{ todo.title }}
             <div>
               <b-icon
@@ -77,7 +92,10 @@ export default {
     FilterTofoAmout
   },
   data() {
-    return {}
+    return {
+      title: null,
+      updating: { value: false, number: null }
+    }
   },
   computed: {
     ...mapState(['todos']),
@@ -100,6 +118,25 @@ export default {
         userId: todo.userId
       }
       this.$store.dispatch('todos/updateTodo', updatedTodo)
+    },
+    selectTodoToUpdate(specificTodo) {
+      const index = this.todos.todos.findIndex(
+        (todo) => todo.id === specificTodo.id
+      )
+      this.title = specificTodo.title
+      this.updating.value = true
+      this.updating.number = index
+    },
+    async updateTodoTitle(todo) {
+      const updatedTodo = {
+        id: todo.id,
+        title: this.title,
+        completed: todo.completed,
+        userId: todo.userId
+      }
+      await this.$store.dispatch('todos/updateTodo', updatedTodo)
+      this.updating.value = false
+      this.updating.number = null
     }
   },
   head() {
@@ -141,12 +178,8 @@ export default {
 
 .legends {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-
-  @media screen and (max-width: 767px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   .legend {
     display: flex;
@@ -154,11 +187,11 @@ export default {
     justify-items: center;
     align-self: center;
 
-    &:first-child {
-      @media screen and (max-width: 767px) {
-        width: 100%;
-      }
-    }
+    // &:first-child {
+    //   @media screen and (max-width: 767px) {
+    //     width: 100%;
+    //   }
+    // }
 
     div {
       margin: auto 5px;
