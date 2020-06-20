@@ -47,7 +47,7 @@
                 color="danger"
                 variant="danger"
                 font-scale="1.5"
-                @click="deleteUser(todo.id)"
+                @click="deleteTodo(todo.id)"
               ></b-icon>
             </div>
           </b-card-text>
@@ -70,6 +70,13 @@ export default {
   created() {
     this.$store.dispatch('todos/getAllTodos')
     // this.$store.dispatch('todos/getAuthors')
+  },
+  methods: {
+    deleteTodo(id) {
+      this.$store.dispatch('todos/deleteSingleTodo', id)
+      // eslint-disable-next-line no-console
+      console.log(id)
+    }
   },
   head() {
     return {

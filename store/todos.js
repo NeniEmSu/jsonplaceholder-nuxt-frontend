@@ -22,6 +22,16 @@ export const actions = {
     }
   },
 
+  async deleteSingleTodo({ commit }, id) {
+    try {
+      await axios.delete(`${URL}/todos/${id}`)
+
+      commit('REMOVE_DELETED_TODO', id)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
+  },
+
   async getAuthors({ commit }, state) {
     try {
       const response = await axios.get(`${URL}/users`)
@@ -50,6 +60,10 @@ export const mutations = {
   SET_TODOS(state, data) {
     state.todos = data
     state.loading = false
+  },
+
+  REMOVE_DELETED_TODO(state, id) {
+    state.todos = state.todos.filter((todo) => todo.id !== id)
   },
 
   SET_USERS(state, data) {
