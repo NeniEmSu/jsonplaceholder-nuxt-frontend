@@ -46,27 +46,31 @@
           :key="todo.id"
           :bg-variant="todo.completed ? 'success' : 'secondary'"
           text-variant="white"
-          :header="`By: ${users[todo.userId ? todo.userId - 1 : 5].username}`"
+          :header="`By: ${users[todo.userId - 1].username}`"
           class=""
           @dblclick="setToCompleted(todo)"
         >
-          <div v-if="updating.value === true && updating.number === index">
-            <b-input
+          <b-form-group
+            v-if="updating.value === true && updating.number === index"
+            label="Edit the Title:"
+            label-for="edit-title"
+          >
+            <b-form-input
+              id="edit-title"
               v-model="title"
               type="text"
               @keyup.enter="updateTodoTitle(todo)"
-            ></b-input>
+            ></b-form-input>
             <small id="edit-titile-form-helper"
               >Edit text & then click enter to update.</small
             >
-          </div>
+          </b-form-group>
 
-          <b-card-text
-            v-else
-            class="d-flex justify-content-between"
-            @click="selectTodoToUpdate(todo)"
-          >
-            {{ todo.title }}
+          <b-card-text v-else class="d-flex justify-content-between">
+            <p class="todo-text" @click="selectTodoToUpdate(todo)">
+              {{ todo.title }}
+            </p>
+
             <div>
               <b-icon
                 class="delete-icon"
@@ -175,7 +179,7 @@ export default {
 }
 
 .delete-icon,
-.edit-icon {
+.todo-text {
   cursor: pointer;
 }
 
