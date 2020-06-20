@@ -1,21 +1,27 @@
 import axios from 'axios'
 const URL = `${process.env.BACKEND_ENDPOINT}`
+const config = {
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8'
+  }
+}
 
 export const state = () => ({
   todos: [],
-  users: [],
   errors: [],
   loading: false
 })
 
 export const actions = {
-  async getAllTodos({ commit, dispatch }, context, state) {
+  async getAllTodos({ commit, dispatch, rootState }, context, state) {
     try {
       commit('SET_LOADING')
       commit('CLEAR_ERRORS')
-      const response = await axios.get(`${URL}/todos`)
+      const response = await axios.get(`${URL}/todos`, config)
       const data = await response.data
-      await dispatch('getAuthors')
+      if (rootState.users.users.length <= 0) {
+        await dispatch('users/getAllUsers', {}, { root: true })
+      }
       commit('SET_TODOS', data)
     } catch (error) {
       commit('SET_ERRORS', error)
@@ -24,7 +30,7 @@ export const actions = {
 
   async getLimitedTodos({ commit }, amount) {
     try {
-      const response = await axios.get(`${URL}/todos?_limit=${amount}`)
+      const response = await axios.get(`${URL}/todos?_limit=${amount}`, config)
       const data = await response.data
       commit('SET_TODOS', data)
     } catch (error) {
@@ -32,23 +38,17 @@ export const actions = {
     }
   },
 
-  async getAuthors({ commit }, state) {
-    try {
-      const response = await axios.get(`${URL}/users`)
-      const data = await response.data
-      commit('SET_USERS', data)
-    } catch (error) {
-      commit('SET_ERRORS', error)
-    }
-  },
-
   async addTodo({ commit }, title) {
     try {
-      const response = await axios.post(`${URL}/todos`, {
-        title,
-        userId: 4,
-        completed: false
-      })
+      const response = await axios.post(
+        `${URL}/todos`,
+        {
+          title,
+          userId: 4,
+          completed: false
+        },
+        config
+      )
       const data = await response.data
       commit('ADD_NEW_TODO', data)
     } catch (error) {
@@ -58,7 +58,7 @@ export const actions = {
 
   async deleteSingleTodo({ commit }, id) {
     try {
-      await axios.delete(`${URL}/todos/${id}`)
+      await axios.delete(`${URL}/todos/${id}`, config)
 
       commit('REMOVE_DELETED_TODO', id)
     } catch (error) {
@@ -68,7 +68,7 @@ export const actions = {
 
   async updateTodo({ commit }, updatedTodo) {
     try {
-      await axios.put(`${URL}/todos/${updatedTodo.id}`)
+      await axios.put(`${URL}/todos/${updatedTodo.id}`, config)
 
       commit('UPDATE_TODO', updatedTodo)
     } catch (error) {
@@ -109,10 +109,6 @@ export const mutations = {
 
   REMOVE_DELETED_TODO(state, id) {
     state.todos = state.todos.filter((todo) => todo.id !== id)
-  },
-
-  SET_USERS(state, data) {
-    state.users = data
   }
 }
 

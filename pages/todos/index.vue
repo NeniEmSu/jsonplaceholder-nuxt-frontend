@@ -43,9 +43,7 @@
           :key="todo.id"
           :bg-variant="todo.completed ? 'success' : 'secondary'"
           text-variant="white"
-          :header="
-            `By: ${todos.users[todo.userId ? todo.userId - 1 : 5].username}`
-          "
+          :header="`By: ${users[todo.userId ? todo.userId - 1 : 5].username}`"
           class=""
           @dblclick="setToCompleted(todo)"
         >
@@ -82,11 +80,13 @@ export default {
     return {}
   },
   computed: {
-    ...mapState(['todos'])
+    ...mapState(['todos']),
+    users() {
+      return this.$store.state.users.users
+    }
   },
   created() {
     this.$store.dispatch('todos/getAllTodos')
-    // this.$store.dispatch('todos/getAuthors')
   },
   methods: {
     deleteTodo(id) {

@@ -156,9 +156,7 @@ export default {
       },
       search: '',
       adding: true,
-      allUsers: [],
       filteredData: [],
-      usersLoading: false,
       isValid: false,
       addLoading: false,
       addState: false,
@@ -198,6 +196,12 @@ export default {
   },
 
   computed: {
+    allUsers() {
+      return this.$store.state.users.users
+    },
+    usersLoading() {
+      return this.$store.state.users.loading
+    },
     items() {
       return this.filteredData.map((user, index) => {
         return {
@@ -251,7 +255,8 @@ export default {
   },
 
   created() {
-    this.getAllUsers()
+    // this.getAllUsers()
+    this.$store.dispatch('users/getAllUsers')
   },
 
   mounted() {
@@ -289,26 +294,6 @@ export default {
           obj.username.toUpperCase().match(search.toUpperCase())
         )
         this.filteredData = filteredDataBySearch
-      }
-    },
-    async getAllUsers() {
-      const config = {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8'
-        }
-      }
-      this.usersLoading = true
-      try {
-        const data = await this.$axios.$get(
-          `${process.env.BACKEND_USERS_ENDPOINT}`,
-          config
-        )
-        const response = await data
-        this.allUsers = response
-        this.usersLoading = false
-      } catch (error) {
-        this.usersLoading = false
-        this.$swal('Error', error.response.data.error, 'error')
       }
     },
 
