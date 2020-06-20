@@ -22,21 +22,35 @@ export const actions = {
     }
   },
 
-  async deleteSingleTodo({ commit }, id) {
-    try {
-      await axios.delete(`${URL}/todos/${id}`)
-
-      commit('REMOVE_DELETED_TODO', id)
-    } catch (error) {
-      commit('SET_ERRORS', error)
-    }
-  },
-
   async getAuthors({ commit }, state) {
     try {
       const response = await axios.get(`${URL}/users`)
       const data = await response.data
       commit('SET_USERS', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
+  },
+
+  async addTodo({ commit }, title) {
+    try {
+      const response = await axios.post(`${URL}/todos`, {
+        title,
+        userId: 4,
+        completed: false
+      })
+      const data = await response.data
+      commit('ADD_NEW_TODO', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
+  },
+
+  async deleteSingleTodo({ commit }, id) {
+    try {
+      await axios.delete(`${URL}/todos/${id}`)
+
+      commit('REMOVE_DELETED_TODO', id)
     } catch (error) {
       commit('SET_ERRORS', error)
     }
@@ -60,6 +74,10 @@ export const mutations = {
   SET_TODOS(state, data) {
     state.todos = data
     state.loading = false
+  },
+
+  ADD_NEW_TODO(state, data) {
+    state.todos.unshift(data)
   },
 
   REMOVE_DELETED_TODO(state, id) {

@@ -1,6 +1,14 @@
 <template>
   <section class="container mt-5">
     <h1>Todos</h1>
+    <template v-if="todos.errors.length > 0">
+      <strong>Something Went wrong:</strong>
+      <b-alert
+        v-for="(error, index) in todoos.errors"
+        :key="index"
+        variant="danger"
+      ></b-alert>
+    </template>
     <template v-if="todos.loading">
       <content-placeholders class="my-3 todos">
         <content-placeholders-img
@@ -10,15 +18,8 @@
         />
       </content-placeholders>
     </template>
-    <template v-else-if="todos.errors.length > 0">
-      <strong>Something Went wrong:</strong>
-      <b-alert
-        v-for="(error, index) in todoos.errors"
-        :key="index"
-        variant="danger"
-      ></b-alert>
-    </template>
     <template v-else>
+      <AddTodoForm />
       <div class="legends">
         <div class="legend">
           <div class="bg-success"></div>
@@ -35,7 +36,9 @@
           :key="todo.id"
           :bg-variant="todo.completed ? 'success' : 'secondary'"
           text-variant="white"
-          :header="`By: ${todos.users[todo.userId - 1].username}`"
+          :header="
+            `By: ${todos.users[todo.userId ? todo.userId - 1 : 5].username}`
+          "
           class=""
         >
           <b-card-text class="d-flex justify-content-between">
@@ -59,8 +62,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import AddTodoForm from '~/components/partials/AddTodoForm'
 export default {
   name: 'Todos',
+  components: {
+    AddTodoForm
+  },
   data() {
     return {}
   },
