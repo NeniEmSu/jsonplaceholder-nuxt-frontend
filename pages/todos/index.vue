@@ -23,67 +23,78 @@
     </template>
     <template v-else>
       <AddTodoForm />
-      <FilterTofoAmout />
+      <FilterTodoAmout />
+      <FilterTodoByUser />
       <div class="legends mt-3">
         <div class="legend">
-          <h5>Click/tap todo text to edit.</h5>
+          <h6>Click/tap todo text to edit.</h6>
         </div>
         <div class="legend">
-          <h5>Double click/tap toggle completion.</h5>
+          <h6>Double click/tap toggle completion.</h6>
         </div>
         <div class="legend">
           <div class="bg-success"></div>
-          <h5>Completed</h5>
+          <h6>Completed</h6>
         </div>
         <div class="legend">
           <div class="bg-secondary"></div>
-          <h5>Uncompleted</h5>
+          <h6>Uncompleted</h6>
         </div>
       </div>
-      <div class="todos mt-2">
-        <b-card
-          v-for="(todo, index) in todos.todos"
-          :key="todo.id"
-          :bg-variant="todo.completed ? 'success' : 'secondary'"
-          text-variant="white"
-          :header="`By: ${users[todo.userId - 1].username}`"
-          class=""
-          @dblclick="setToCompleted(todo)"
-        >
-          <b-form-group
-            v-if="updating.value === true && updating.number === index"
-            label="Edit the Title:"
-            label-for="edit-title"
+      <template v-if="todos.todos.length === 0">
+        <div class="text-center my-5">
+          <p>
+            Unfortunately no Todos match your current query, try adding one or
+            consider trying another query parameter.
+          </p>
+        </div>
+      </template>
+      <template v-else>
+        <div class="todos mt-2">
+          <b-card
+            v-for="(todo, index) in todos.todos"
+            :key="todo.id"
+            :bg-variant="todo.completed ? 'success' : 'secondary'"
+            text-variant="white"
+            :header="`By: ${users[todo.userId - 1].username}`"
+            class=""
+            @dblclick="setToCompleted(todo)"
           >
-            <b-form-input
-              id="edit-title"
-              v-model="title"
-              type="text"
-              @keyup.enter="updateTodoTitle(todo)"
-            ></b-form-input>
-            <small id="edit-titile-form-helper"
-              >Edit text & then click enter to update.</small
+            <b-form-group
+              v-if="updating.value === true && updating.number === index"
+              label="Edit the Title:"
+              label-for="edit-title"
             >
-          </b-form-group>
+              <b-form-input
+                id="edit-title"
+                v-model="title"
+                type="text"
+                @keyup.enter="updateTodoTitle(todo)"
+              ></b-form-input>
+              <small id="edit-titile-form-helper"
+                >Edit text & then click enter to update.</small
+              >
+            </b-form-group>
 
-          <b-card-text v-else class="d-flex justify-content-between">
-            <p class="todo-text" @click="selectTodoToUpdate(todo)">
-              {{ todo.title }}
-            </p>
+            <b-card-text v-else class="d-flex justify-content-between">
+              <p class="todo-text" @click="selectTodoToUpdate(todo)">
+                {{ todo.title }}
+              </p>
 
-            <div>
-              <b-icon
-                class="delete-icon"
-                icon="trash-fill"
-                color="danger"
-                variant="danger"
-                font-scale="1.5"
-                @click="deleteTodo(todo.id)"
-              ></b-icon>
-            </div>
-          </b-card-text>
-        </b-card>
-      </div>
+              <div>
+                <b-icon
+                  class="delete-icon"
+                  icon="trash-fill"
+                  color="danger"
+                  variant="danger"
+                  font-scale="1.5"
+                  @click="deleteTodo(todo.id)"
+                ></b-icon>
+              </div>
+            </b-card-text>
+          </b-card>
+        </div>
+      </template>
     </template>
   </section>
 </template>
@@ -91,12 +102,14 @@
 <script>
 import { mapState } from 'vuex'
 import AddTodoForm from '~/components/partials/AddTodoForm'
-import FilterTofoAmout from '~/components/partials/FilterTodoAmout'
+import FilterTodoAmout from '~/components/partials/FilterTodoAmout'
+import FilterTodoByUser from '~/components/partials/FilterTodoByUser'
 export default {
   name: 'Todos',
   components: {
     AddTodoForm,
-    FilterTofoAmout
+    FilterTodoAmout,
+    FilterTodoByUser
   },
   data() {
     return {
@@ -186,7 +199,7 @@ export default {
 .legends {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 15px;
 
   .legend {
     display: flex;
@@ -202,9 +215,8 @@ export default {
 
     div {
       margin: auto 5px;
-      height: 10px;
-      width: 10px;
-      align-self: center;
+      height: 8px;
+      width: 8px;
     }
 
     h5 {

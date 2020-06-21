@@ -38,6 +38,16 @@ export const actions = {
     }
   },
 
+  async getSpecificUserTodos({ commit }, userId) {
+    try {
+      const response = await axios.get(`${URL}/todos?userId=${userId}`, config)
+      const data = await response.data
+      commit('SET_TODOS', data)
+    } catch (error) {
+      commit('SET_ERRORS', error)
+    }
+  },
+
   async addTodo({ commit }, title) {
     try {
       const response = await axios.post(
@@ -68,9 +78,16 @@ export const actions = {
 
   async updateTodo({ commit }, updatedTodo) {
     try {
-      await axios.put(`${URL}/todos/${updatedTodo.id}`, config)
+      const response = await axios.put(
+        `${URL}/todos/${updatedTodo.id}`,
+        updatedTodo,
+        config
+      )
+      const data = response.data
+      // eslint-disable-next-line no-console
+      console.log(data)
 
-      commit('UPDATE_TODO', updatedTodo)
+      commit('UPDATE_TODO', data)
     } catch (error) {
       commit('SET_ERRORS', error)
     }
