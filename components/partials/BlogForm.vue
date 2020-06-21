@@ -168,7 +168,7 @@ export default {
             )
           })
       } catch (error) {
-        this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
+        this.$swal('Error', `Something Went wrong, ${error}`, 'error')
       }
       this.addLoading = false
     },
@@ -182,8 +182,8 @@ export default {
       try {
         this.addLoading = true
         await this.$axios
-          .$post(
-            `${process.env.BACKEND_POSTS_ENDPOINT}/${this.blogDetails.id}`,
+          .$put(
+            `${process.env.BACKEND_ENDPOINT}/posts/${this.blogDetails.id}`,
             this.blogDetails,
             config
           )
@@ -202,7 +202,7 @@ export default {
             )
           })
       } catch (error) {
-        this.$swal('Error', `Something Went wrong, \n Error: ${error}`, 'error')
+        this.$swal('Error', `Something Went wrong, ${error}`, 'error')
       }
       this.addLoading = false
     }

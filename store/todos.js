@@ -19,7 +19,7 @@ export const actions = {
       commit('CLEAR_ERRORS')
       const response = await axios.get(`${URL}/todos`, config)
       const data = await response.data
-      if (rootState.users.users.length <= 0) {
+      if (rootState.users.users.length < 10) {
         await dispatch('users/getAllUsers', {}, { root: true })
       }
       commit('SET_TODOS', data)

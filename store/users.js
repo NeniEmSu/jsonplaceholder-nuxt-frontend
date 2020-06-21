@@ -111,4 +111,8 @@ export const mutations = {
   }
 }
 
-export const getters = {}
+export const getters = {
+  getAuthorById: (state) => (id) => {
+    return state.users.find((user) => user.id === id)
+  }
+}

@@ -78,8 +78,7 @@
       <strong class="mt-4"
         >By: {{ `${author.name} (${author.username})` }}</strong
       >
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="mt-4" v-html="blog.body"></div>
+      <div class="mt-4">{{ blog.body }}</div>
     </template>
 
     <div class="comments mt-5">
@@ -127,23 +126,15 @@
 <script>
 import BlogForm from '~/components/partials/BlogForm'
 export default {
+  name: 'SingleBlogPost',
   components: {
     BlogForm
   },
-  filters: {
-    truncate(text, length, suffix) {
-      if (text.length > length) {
-        return text.substring(0, length) + suffix
-      } else {
-        return text
-      }
-    }
-  },
+
   data() {
     return {
       deleteLoading: false,
       blogDetails: {},
-      author: {},
       comments: [],
       error: '',
       editState: false,
@@ -151,9 +142,15 @@ export default {
       loadingComments: false
     }
   },
+
+  computed: {
+    author() {
+      return this.$store.getters['users/getAuthorById'](this.blog.userId)
+    }
+  },
+
   created() {
     this.getBlog()
-    this.getComments()
   },
   methods: {
     goBack() {
@@ -167,23 +164,13 @@ export default {
       this.getBlog()
       this.editState = false
     },
-    async getAuthor() {
-      try {
-        const data = await this.$axios.$get(
-          `${process.env.BACKEND_USERS_ENDPOINT}/${this.blog.userId}`
-        )
-        this.author = await data
-      } catch (error) {
-        this.$swal('Error', error.response.data.error, 'error')
-      }
-    },
     async getComments() {
       this.loadingComments = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_USERS_ENDPOINT}/${this.$route.params.id}/comments`
+          `${process.env.BACKEND_ENDPOINT}/posts/${this.$route.params.id}/comments?_page=1`
         )
-        this.comments = await data
+        this.comments = data
       } catch (error) {
         this.$swal('Error', error.response.data.error, 'error')
       }
@@ -193,11 +180,14 @@ export default {
       this.blogLoading = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_POSTS_ENDPOINT}/${this.$route.params.id}`
+          `${process.env.BACKEND_ENDPOINT}/posts/${this.$route.params.id}`
         )
-        this.blog = await data
-        this.blogDetails = await data
-        await this.getAuthor()
+        this.blog = data
+        this.blogDetails = data
+        if (this.$store.state.users.users.length < 10) {
+          await this.$store.dispatch('users/getAllUsers')
+        }
+        this.getComments()
       } catch (error) {
         this.$swal('Error', error.response.data.error, 'error')
       }
@@ -216,7 +206,7 @@ export default {
       }).then((willDelete) => {
         if (willDelete.value) {
           this.$axios
-            .$delete(`${process.env.BACKEND_POSTS_ENDPOINT}/${id}`)
+            .$delete(`${process.env.BACKEND_ENDPOINT}/posts/${id}`)
             .then((response) => {
               this.deleteLoading = false
               this.$router.push('/blogs')

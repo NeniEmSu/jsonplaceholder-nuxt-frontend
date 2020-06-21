@@ -64,9 +64,10 @@
                     alt="placeholder"
                   ></b-img>
                 </template>
-                <h4 class="mt-1 mb-1">{{ blog.title }}</h4>
-                <!-- eslint-disable-next-line vue/no-v-html -->
-                <div class="mb-2" v-html="blog.body"></div>
+                <h4 class="mt-1 mb-1">
+                  {{ blog.title | truncate(25, '...') }}
+                </h4>
+                <div class="mb-2">{{ blog.body | truncate(60, '...') }}</div>
                 <nuxt-link
                   class="ml-auto"
                   variant="light"
@@ -97,6 +98,16 @@ export default {
     BlogForm
   },
 
+  filters: {
+    truncate(text, length, suffix) {
+      if (text.length > length) {
+        return text.substring(0, length) + suffix
+      } else {
+        return text
+      }
+    }
+  },
+
   data() {
     return {
       blogDetails: {
@@ -113,11 +124,7 @@ export default {
     }
   },
 
-  computed: {
-    content(blog) {
-      return this.$options.filters.truncate(blog.body, 20, '...')
-    }
-  },
+  computed: {},
 
   watch: {
     allBlogs() {
