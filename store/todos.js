@@ -54,7 +54,7 @@ export const actions = {
         `${URL}/todos`,
         {
           title,
-          userId: 4,
+          userId: Math.floor(Math.random() * (10 - 1) + 1),
           completed: false
         },
         config
@@ -84,9 +84,6 @@ export const actions = {
         config
       )
       const data = response.data
-      // eslint-disable-next-line no-console
-      console.log(data)
-
       commit('UPDATE_TODO', data)
     } catch (error) {
       commit('SET_ERRORS', error)
