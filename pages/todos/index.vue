@@ -1,7 +1,7 @@
 <template>
   <section class="container mt-5">
     <h1>Todos</h1>
-    <template v-if="todos.errors.length > 0">
+    <template v-if="errors.length > 0">
       <strong>Something Went wrong:</strong>
       <b-alert
         v-for="(error, index) in todos.errors"
@@ -9,7 +9,7 @@
         variant="danger"
       ></b-alert>
     </template>
-    <template v-if="todos.loading">
+    <template v-if="loading">
       <content-placeholders class="my-3 ">
         <content-placeholders-heading />
         <div class="todos mt-3">
@@ -41,7 +41,7 @@
           <h6>Uncompleted</h6>
         </div>
       </div>
-      <template v-if="todos.todos.length === 0">
+      <template v-if="todos.length === 0">
         <div class="text-center my-5">
           <p>
             Unfortunately no Todos match your current query, try adding one or
@@ -52,7 +52,7 @@
       <template v-else>
         <div class="todos mt-2">
           <b-card
-            v-for="(todo, index) in todos.todos"
+            v-for="(todo, index) in todos"
             :key="todo.id"
             :bg-variant="todo.completed ? 'success' : 'secondary'"
             text-variant="white"
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import AddTodoForm from '~/components/partials/AddTodoForm'
 import FilterTodoAmout from '~/components/partials/FilterTodoAmout'
 import FilterTodoByUser from '~/components/partials/FilterTodoByUser'
@@ -118,18 +118,23 @@ export default {
     }
   },
   computed: {
-    ...mapState(['todos']),
+    ...mapState('todos', ['todos', 'loading', 'errors']),
     users() {
       return this.$store.state.users.users
     }
   },
+
   created() {
-    this.$store.dispatch('todos/getAllTodos')
+    this.getAllTodos()
   },
+
   methods: {
+    ...mapActions('todos', ['getAllTodos', 'deleteSingleTodo', 'updateTodo']),
+
     deleteTodo(id) {
-      this.$store.dispatch('todos/deleteSingleTodo', id)
+      this.deleteSingleTodo(id)
     },
+
     setToCompleted(todo) {
       const updatedTodo = {
         id: todo.id,
@@ -137,8 +142,9 @@ export default {
         completed: !todo.completed,
         userId: todo.userId
       }
-      this.$store.dispatch('todos/updateTodo', updatedTodo)
+      this.updateTodo(updatedTodo)
     },
+
     selectTodoToUpdate(specificTodo) {
       const index = this.todos.todos.findIndex(
         (todo) => todo.id === specificTodo.id
@@ -147,6 +153,7 @@ export default {
       this.updating.value = true
       this.updating.number = index
     },
+
     async updateTodoTitle(todo) {
       const updatedTodo = {
         id: todo.id,
@@ -154,7 +161,7 @@ export default {
         completed: todo.completed,
         userId: todo.userId
       }
-      await this.$store.dispatch('todos/updateTodo', updatedTodo)
+      await this.updateTodo(updatedTodo)
       this.updating.value = false
       this.updating.number = null
     }
