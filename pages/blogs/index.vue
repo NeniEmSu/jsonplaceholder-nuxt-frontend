@@ -74,7 +74,10 @@
                   :aria-label="`Link to ${blog.title} `"
                   :to="{
                     name: 'blogs-id-title',
-                    params: { id: blog.id, title: blog.title }
+                    params: {
+                      id: blog.id,
+                      title: blog.title.replace(/\s+/g, '-').toLowerCase()
+                    }
                   }"
                 >
                   Read More
