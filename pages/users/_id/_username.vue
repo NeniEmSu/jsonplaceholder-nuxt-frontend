@@ -182,7 +182,7 @@
                 <div class="profile-info-value">
                   <i class="fa fa-map-marker light-orange bigger-110"></i>
                   <span>{{ user.address.street }}</span>
-                  <span>{{ user.address.suitee }}</span>
+                  <span>{{ user.address.suite }}</span>
                   <span>{{ user.address.city }}</span>
                 </div>
               </div>
