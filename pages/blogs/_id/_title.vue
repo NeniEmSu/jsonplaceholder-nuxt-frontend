@@ -47,38 +47,54 @@
           </div>
         </div>
       </div>
-      <div class="d-block d-sm-flex align-items-center mb-2">
-        <h1 class="text-capitalize">{{ blog.title }}</h1>
-        <b-button class="ml-4" variant="light" @click="editState = !editState">
-          <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
-        </b-button>
+      <div class="row">
+        <div class="col-md-8 col-lg-9">
+          <div class="d-block d-sm-flex align-items-center mb-2">
+            <h1 class="text-capitalize">{{ blog.title }}</h1>
+            <b-button
+              class="ml-4"
+              variant="light"
+              @click="editState = !editState"
+            >
+              <b-icon icon="pencil-square" font-scale="1.5"> </b-icon>
+            </b-button>
 
-        <b-button
-          class="ml-auto"
-          variant="light"
-          :disabled="deleteLoading"
-          @click="deleteBlog(blog.id)"
-        >
-          <span
-            v-if="deleteLoading"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          <b-icon
-            v-else
-            icon="trash-fill"
-            color="danger"
-            variant="danger"
-            font-scale="1.5"
+            <b-button
+              class="ml-auto"
+              variant="light"
+              :disabled="deleteLoading"
+              @click="deleteBlog(blog.id)"
+            >
+              <span
+                v-if="deleteLoading"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <b-icon
+                v-else
+                icon="trash-fill"
+                color="danger"
+                variant="danger"
+                font-scale="1.5"
+              >
+              </b-icon>
+            </b-button>
+          </div>
+          <strong class="mt-4"
+            >By: {{ `${author.name} (${author.username})` }}</strong
           >
-          </b-icon>
-        </b-button>
+          <div class="mt-">{{ blog.body }}</div>
+        </div>
+        <div class="col-md-4 col-lg-3">
+          <Sidebar
+            class="sticky-sidebar"
+            :user-id="blog.userId"
+            :loading="blogLoading"
+            :error="false"
+          />
+        </div>
       </div>
-      <strong class="mt-4"
-        >By: {{ `${author.name} (${author.username})` }}</strong
-      >
-      <div class="mt-4">{{ blog.body }}</div>
     </template>
 
     <div class="comments mt-5">
@@ -125,10 +141,12 @@
 
 <script>
 import BlogForm from '~/components/partials/BlogForm'
+import Sidebar from '~/components/sidebar'
 export default {
   name: 'SingleBlogPost',
   components: {
-    BlogForm
+    BlogForm,
+    Sidebar
   },
 
   data() {
@@ -245,3 +263,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.sticky-sidebar {
+  position: sticky;
+  top: 20px;
+}
+</style>
