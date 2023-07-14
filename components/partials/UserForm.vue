@@ -402,7 +402,7 @@ export default {
       try {
         this.addLoading = true
         await this.$axios
-          .$post(
+          .$put(
             `${process.env.BACKEND_USERS_ENDPOINT}/${this.userDetails.id}`,
             this.userDetails,
             config

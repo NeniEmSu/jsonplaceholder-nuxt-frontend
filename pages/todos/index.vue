@@ -146,7 +146,7 @@ export default {
     },
 
     selectTodoToUpdate(specificTodo) {
-      const index = this.todos.todos.findIndex(
+      const index = this.todos.findIndex(
         (todo) => todo.id === specificTodo.id
       )
       this.title = specificTodo.title

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const URL = `${process.env.BACKEND_ENDPOINT}`
+const BACKEND_USERS_ENDPOINT = `${process.env.BACKEND_USERS_ENDPOINT}`
 
 export const state = () => ({
   users: [],
@@ -12,7 +12,7 @@ export const actions = {
     try {
       commit('SET_LOADING')
       commit('CLEAR_ERRORS')
-      const response = await axios.get(`${URL}/users`)
+      const response = await axios.get(`${BACKEND_USERS_ENDPOINT}`)
       const data = await response.data
       commit('SET_USERS', data)
     } catch (error) {
@@ -23,7 +23,7 @@ export const actions = {
 
   async getLimitedUsers({ commit }, amount) {
     try {
-      const response = await axios.get(`${URL}/users?_limit=${amount}`)
+      const response = await axios.get(`${BACKEND_USERS_ENDPOINT}?_limit=${amount}`)
       const data = await response.data
       commit('SET_USERS', data)
     } catch (error) {
@@ -33,7 +33,7 @@ export const actions = {
 
   async getAuthors({ commit }, state) {
     try {
-      const response = await axios.get(`${URL}/users`)
+      const response = await axios.get(`${BACKEND_USERS_ENDPOINT}`)
       const data = await response.data
       commit('SET_USERS', data)
     } catch (error) {
@@ -43,7 +43,7 @@ export const actions = {
 
   async addUser({ commit }, title) {
     try {
-      const response = await axios.post(`${URL}/users`, {
+      const response = await axios.post(`${BACKEND_USERS_ENDPOINT}`, {
         title,
         userId: 4,
         completed: false
@@ -57,7 +57,7 @@ export const actions = {
 
   async deleteSingleUser({ commit }, id) {
     try {
-      await axios.delete(`${URL}/users/${id}`)
+      await axios.delete(`${BACKEND_USERS_ENDPOINT}/${id}`)
 
       commit('REMOVE_DELETED_USER', id)
     } catch (error) {
@@ -67,7 +67,7 @@ export const actions = {
 
   async updateUser({ commit }, updatedUser) {
     try {
-      await axios.put(`${URL}/users/${updatedUser.id}`)
+      await axios.put(`${BACKEND_USERS_ENDPOINT}/${updatedUser.id}`)
 
       commit('UPDATE_USER', updatedUser)
     } catch (error) {

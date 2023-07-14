@@ -183,7 +183,7 @@ export default {
         this.addLoading = true
         await this.$axios
           .$put(
-            `${process.env.BACKEND_ENDPOINT}/posts/${this.blogDetails.id}`,
+            `${process.env.BACKEND_POSTS_ENDPOINT}/${this.blogDetails.id}`,
             this.blogDetails,
             config
           )
