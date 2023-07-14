@@ -136,13 +136,13 @@
               ><b-icon class="bigger-120" icon="pencil-square" font-scale="1.5">
               </b-icon>
               <span class="bigger-110">
-                Update {{ user.username | truncate(5, '...') }}'s details.</span
+                Update {{ user.username | truncate(5, '...') }}'s details</span
               >
             </b-button>
 
             <b-button
               class="btn btn-sm btn-block btn-danger"
-              @click="editState = !editState"
+              @click="deleteUser(user.id)"
               ><b-icon class="bigger-120" icon="trash-fill" font-scale="1.5">
               </b-icon>
               <span
@@ -152,7 +152,7 @@
                 aria-hidden="true"
               ></span>
               <span v-else class="bigger-110">
-                Delete {{ user.username | truncate(5, '...') }}.</span
+                Delete {{ user.username | truncate(5, '...') }}</span
               >
             </b-button>
           </div>

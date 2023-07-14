@@ -1,5 +1,5 @@
 import axios from 'axios'
-const URL = `${process.env.BACKEND_ENDPOINT}`
+const BACKEND_TODOS_ENDPOINT = `${process.env.BACKEND_TODOS_ENDPOINT}`
 const config = {
   headers: {
     'Content-type': 'application/json; charset=UTF-8'
@@ -17,7 +17,7 @@ export const actions = {
     try {
       commit('SET_LOADING')
       commit('CLEAR_ERRORS')
-      const response = await axios.get(`${URL}/todos`, config)
+      const response = await axios.get(`${BACKEND_TODOS_ENDPOINT}`, config)
       const data = await response.data
       if (rootState.users.users.length < 10) {
         await dispatch('users/getAllUsers', {}, { root: true })
@@ -30,7 +30,7 @@ export const actions = {
 
   async getLimitedTodos({ commit }, amount) {
     try {
-      const response = await axios.get(`${URL}/todos?_limit=${amount}`, config)
+      const response = await axios.get(`${BACKEND_TODOS_ENDPOINT}?_limit=${amount}`, config)
       const data = await response.data
       commit('SET_TODOS', data)
     } catch (error) {
@@ -40,7 +40,7 @@ export const actions = {
 
   async getSpecificUserTodos({ commit }, userId) {
     try {
-      const response = await axios.get(`${URL}/todos?userId=${userId}`, config)
+      const response = await axios.get(`${BACKEND_TODOS_ENDPOINT}?userId=${userId}`, config)
       const data = await response.data
       commit('SET_TODOS', data)
     } catch (error) {
@@ -51,7 +51,7 @@ export const actions = {
   async addTodo({ commit }, title) {
     try {
       const response = await axios.post(
-        `${URL}/todos`,
+        `${BACKEND_TODOS_ENDPOINT}`,
         {
           title,
           userId: Math.floor(Math.random() * (10 - 1) + 1),
@@ -68,7 +68,7 @@ export const actions = {
 
   async deleteSingleTodo({ commit }, id) {
     try {
-      await axios.delete(`${URL}/todos/${id}`, config)
+      await axios.delete(`${BACKEND_TODOS_ENDPOINT}/${id}`, config)
 
       commit('REMOVE_DELETED_TODO', id)
     } catch (error) {
@@ -79,7 +79,7 @@ export const actions = {
   async updateTodo({ commit }, updatedTodo) {
     try {
       const response = await axios.put(
-        `${URL}/todos/${updatedTodo.id}`,
+        `${BACKEND_TODOS_ENDPOINT}/${updatedTodo.id}`,
         updatedTodo,
         config
       )

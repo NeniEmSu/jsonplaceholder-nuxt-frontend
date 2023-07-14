@@ -298,7 +298,7 @@ export default {
     },
 
     callGetUsers() {
-      this.getAllUsers()
+        this.$store.dispatch('users/getAllUsers')
       this.addState = false
     },
 
@@ -327,7 +327,7 @@ export default {
             .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`, config)
             .then((response) => {
               this.deleteLoading = false
-              this.getAllUsers()
+              this.$store.dispatch('users/getAllUsers')
               this.$swal({
                 text: "Poof! You've sucessfully deleted that user!",
                 icon: 'success'
