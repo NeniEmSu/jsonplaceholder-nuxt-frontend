@@ -61,14 +61,14 @@ export default {
   generate: {
     routes() {
       const userRoute = axios
-        .get(`${process.env.BACKEND_USERS_ENDPOINT}`)
+        .get(`${process.env.BACKEND_ENDPOINT}/users`)
         .then((res) => {
           return res.data.map((user) => {
             return `/users/${user.id}/${user.username}`
           })
         })
       const postsRoute = axios
-        .get(`${process.env.BACKEND_POSTS_ENDPOINT}`)
+        .get(`${process.env.BACKEND_ENDPOINT}/posts`)
         .then((res) => {
           return res.data.map((post) => {
             return `/blogs/${post.id}/${post.title}`

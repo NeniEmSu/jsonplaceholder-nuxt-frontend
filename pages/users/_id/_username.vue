@@ -324,7 +324,7 @@ export default {
       this.userLoading = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_USERS_ENDPOINT}/${this.$route.params.id}`
+          `${process.env.BACKEND_ENDPOINT}/users/${this.$route.params.id}`
         )
         this.user = await data
         this.userDetails = await data
@@ -346,7 +346,7 @@ export default {
       }).then((willDelete) => {
         if (willDelete.value) {
           this.$axios
-            .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`)
+            .$delete(`${process.env.BACKEND_ENDPOINT}/users/${id}`)
             .then((response) => {
               this.deleteLoading = false
               this.$router.push('/users')

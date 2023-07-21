@@ -12,7 +12,7 @@
           width="26px"
           fluid
           class=" img-thumbnail"
-          src="https://nuxtjs.org/logos/nuxt-icon.png"
+          src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Nuxt_logo.svg"
         ></b-img>
 
         Frontend</b-navbar-brand

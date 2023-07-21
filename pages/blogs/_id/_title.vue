@@ -186,7 +186,7 @@ export default {
       this.loadingComments = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_POSTS_ENDPOINT}/${this.$route.params.id}/comments?_page=1`
+          `${process.env.BACKEND_ENDPOINT}/posts/${this.$route.params.id}/comments?_page=1`
         )
         this.comments = data
       } catch (error) {
@@ -198,7 +198,7 @@ export default {
       this.blogLoading = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_POSTS_ENDPOINT}/${this.$route.params.id}`
+          `${process.env.BACKEND_ENDPOINT}/posts/${this.$route.params.id}`
         )
         this.blog = data
         this.blogDetails = data
@@ -224,7 +224,7 @@ export default {
       }).then((willDelete) => {
         if (willDelete.value) {
           this.$axios
-            .$delete(`${process.env.BACKEND_POSTS_ENDPOINT}/${id}`)
+            .$delete(`${process.env.BACKEND_ENDPOINT}/posts/${id}`)
             .then((response) => {
               this.deleteLoading = false
               this.$router.push('/blogs')

@@ -324,7 +324,7 @@ export default {
       }).then((willDelete) => {
         if (willDelete.value) {
           this.$axios
-            .$delete(`${process.env.BACKEND_USERS_ENDPOINT}/${id}`, config)
+            .$delete(`${process.env.BACKEND_ENDPOINT}/users/${id}`, config)
             .then((response) => {
               this.deleteLoading = false
               this.$store.dispatch('users/getAllUsers')

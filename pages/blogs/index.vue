@@ -193,7 +193,7 @@ export default {
       this.blogsLoading = true
       try {
         const data = await this.$axios.$get(
-          `${process.env.BACKEND_POSTS_ENDPOINT}`,
+          `${process.env.BACKEND_ENDPOINT}/posts`,
           config
         )
         const response = await data
